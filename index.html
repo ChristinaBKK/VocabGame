@@ -344,6 +344,18 @@
                 opacity: 0;
             }
         }
+      	@keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.3s ease;
+}
         
         @media (max-width: 768px) {
             .header h1 {
@@ -413,20 +425,20 @@
             
             <div class="card">
                 <div class="hint">
-                    <span id="date-hint">Date: 1492 CE</span>
-                    <span>Letters: <strong id="letter-count">19</strong></span>
+                    <span id="date-hint">Date: ~1660-1830s CE</span>
+                    <span>Letters: <strong id="letter-count">21</strong></span>
                 </div>
                 
-                <div class="description" id="term-description">Genoese sponsored by Spain in 1492, aimed to find a westward route to Asia but inadvertently discovered the Americas. His voyages marked the beginning of sustained European contact with the New World, impacting both regions significantly.</div>
+                <div class="description" id="term-description">A political union between various Native American peoples of the northeastern United States also known as Haudenosauanee. Members included Seneca, Cayuga, Mohawk, Onondaga, Oneida, and later the Tuscaroras.</div>
                 
-                <div class="letter-boxes-container" id="letter-boxes-container"><div class="letter-boxes-row"><div class="word-group"><div class="letter-box first-letter" data-index="0">C</div><div class="letter-box blank" data-index="1" style="box-shadow: rgb(52, 152, 219) 0px 0px 0px 3px;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="2" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="3" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="4" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="5" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="6" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="7" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="8" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="9" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="10" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box fixed" data-index="11"> </div></div><div class="word-group"><div class="letter-box blank" data-index="12" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="13" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="14" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="15" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="16" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="17" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="18" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="19" style="box-shadow: none;"><span class="underscore">_</span></div></div></div></div>
+                <div class="letter-boxes-container" id="letter-boxes-container"><div class="letter-boxes-row"><div class="word-group"><div class="letter-box first-letter" data-index="0" style="transition: background-color 0.3s, border-color 0.3s; background-color: rgb(209, 250, 229); border-color: rgb(52, 211, 153);">I</div><div class="letter-box user-input" data-index="1" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="2" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="3" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="4" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="5" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="6" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="7" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box fixed" data-index="8" style="transition: background-color 0.3s, border-color 0.3s; background-color: rgb(209, 250, 229); border-color: rgb(52, 211, 153);"> </div></div><div class="word-group"><div class="letter-box user-input" data-index="9" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="10" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="11" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="12" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="13" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(209, 250, 229); border-color: rgb(52, 211, 153);">e</div><div class="letter-box user-input" data-index="14" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="15" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(209, 250, 229); border-color: rgb(52, 211, 153);">e</div><div class="letter-box user-input" data-index="16" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="17" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="18" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="19" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="20" style="box-shadow: none; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div><div class="letter-box user-input" data-index="21" style="box-shadow: rgb(52, 152, 219) 0px 0px 0px 3px; transition: background-color 0.3s, border-color 0.3s; background-color: rgb(254, 226, 226); border-color: rgb(248, 113, 113);">e</div></div></div></div>
                 
                 <div class="input-group">
                     <button class="btn" id="submit-btn">Submit Answer</button>
                     <button class="btn" id="clear-btn" style="background: linear-gradient(90deg, #e74c3c, #c0392b);">Clear</button>
                 </div>
                 
-                <div class="message" id="message"></div>
+                <div class="message error" id="message">Not quite. Try again!</div>
                 
                 <div class="animation-container" id="animation-container"></div>
             </div>
@@ -785,6 +797,10 @@
                     box.style.backgroundColor = '#fee2e2';
                     box.style.borderColor = '#f87171';
                     allCorrect = false;
+                  	box.classList.add('shake');
+box.addEventListener('animationend', () => {
+    box.classList.remove('shake');
+}, { once: true });
                 }
             });
 
