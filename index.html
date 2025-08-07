@@ -743,17 +743,23 @@
         }
 
         function handleKeyDown(e) {
-            if (!gameActive) return;
-            
-            if (e.key.length === 1 && e.key.match(/[a-z]/i)) {
-                fillBlank(e.key);
-            } else if (e.key === 'Backspace') {
-                handleBackspace();
-            } else if (e.key === 'Enter') {
-                e.preventDefault();
-                checkAnswer();
-            }
-        }
+    if (!gameActive) return;
+
+    // Prevent spacebar from triggering anything
+    if (e.key === ' ') {
+        e.preventDefault();
+        return;
+    }
+
+    if (e.key.length === 1 && e.key.match(/[a-z]/i)) {
+        fillBlank(e.key);
+    } else if (e.key === 'Backspace') {
+        handleBackspace();
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        checkAnswer();
+    }
+}
 
         function checkAnswer() {
             const term = currentTerms[currentTermIndex].term;
