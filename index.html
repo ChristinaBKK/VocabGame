@@ -696,24 +696,29 @@
             }
         }
 
-        function clearAllBlanks() {
-            for (let i = 0; i < editableIndices.length; i++) {
-                const index = editableIndices[i];
-                const blank = document.querySelector(`[data-index="${index}"]`);
-                if (blank) {
-                    blank.textContent = '';
-                    blank.classList.remove('user-input');
-                    blank.classList.add('blank');
-                    blank.innerHTML = '<span class="underscore">_</span>';
-                    userInput[index] = '';
-                }
-            }
-            
-            if (editableIndices.length > 0) {
-                currentBlankIndex = editableIndices[0];
-                updateActiveBlank();
-            }
+function clearAllBlanks() {
+    for (let i = 0; i < editableIndices.length; i++) {
+        const index = editableIndices[i];
+        const blank = document.querySelector(`[data-index="${index}"]`);
+        if (blank) {
+            blank.textContent = '';
+            blank.classList.remove('user-input');
+            blank.classList.add('blank');
+            blank.innerHTML = '<span class="underscore">_</span>';
+            userInput[index] = '';
+
+            // Reset styles to the "empty" look
+            blank.style.backgroundColor = '';
+            blank.style.borderColor = '';
         }
+    }
+
+    if (editableIndices.length > 0) {
+        currentBlankIndex = editableIndices[0];
+        updateActiveBlank();
+    }
+}
+
 
         function updateActiveBlank() {
             const blanks = document.querySelectorAll('.blank, .user-input');
