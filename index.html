@@ -216,9 +216,20 @@
         }
         
         .letter-box.fixed {
-            background: #e0e7ff;
-            color: #4f46e5;
-            border: 2px solid #a5b4fc;
+            background: transparent;
+            color: #2c3e50;
+            border: none;
+            cursor: default;
+            min-width: auto;
+            padding: 0 5px;
+        }
+        
+        .letter-box.fixed-space {
+            min-width: 20px;
+        }
+        
+        .letter-box.fixed-hyphen {
+            min-width: 20px;
         }
         
         .input-group {
@@ -385,7 +396,7 @@
 
     <div class="container">
         <div class="header">
-            <h1><i class="fas fa-brain"></i> Vocabulary Memorization Game</h1>
+            <h1><i class="fas fa-brain"></i> AP US History <br>Vocabulary Quiz</h1>
             <p>Test your knowledge of historical terms and concepts</p>
         </div>
         
@@ -407,23 +418,21 @@
             <div class="progress-container">
                 <div class="progress-text">
                     <span>Progress</span>
-                    <span id="progress-text">2/7</span>
+                    <span id="progress-text">1/7</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill" style="width: 14.2857%;"></div>
-                </div>
+    <div class="progress-fill"></div>
+</div>
             </div>
             
             <div class="card">
                 <div class="hint">
-                    <span id="date-hint">Date: 1494 CE</span>
-                    <span>Letters: <strong id="letter-count">19</strong></span>
+                    <span id="date-hint"></span>
+                    <span>Letters: <strong id="letter-count"></strong></span>
                 </div>
                 
-                <div class="description" id="term-description">This treaty divided newly discovered lands between Spain and Portugal along a meridian called the line of demarcation. The two empires worked with the Catholic Church. This agreement aimed to resolve territorial disputes and significantly influenced colonization patterns in the New World.</div>
-                
-                <div class="letter-boxes-container" id="letter-boxes-container"><div class="letter-boxes-row"><div class="word-group"><div class="letter-box first-letter" data-index="0">T</div><div class="letter-box blank" data-index="1" style="box-shadow: rgb(52, 152, 219) 0px 0px 0px 3px;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="2" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="3" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="4" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="5" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box fixed" data-index="6"> </div></div><div class="word-group"><div class="letter-box blank" data-index="7" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="8" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box fixed" data-index="9"> </div></div><div class="word-group"><div class="letter-box blank" data-index="10" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="11" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="12" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="13" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="14" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="15" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="16" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="17" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="18" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="19" style="box-shadow: none;"><span class="underscore">_</span></div><div class="letter-box blank" data-index="20" style="box-shadow: none;"><span class="underscore">_</span></div></div></div></div>
-                
+                <div class="description" id="term-description"></div>
+				<div class="letter-boxes-container" id="letter-boxes-container"></div>
                 <div class="input-group">
                     <button class="btn" id="submit-btn">Submit Answer</button>
                     <button class="btn" id="clear-btn" style="background: linear-gradient(90deg, #e74c3c, #c0392b);">Clear</button>
@@ -431,7 +440,7 @@
                 
                 <div class="message" id="message">Correct! Well done!</div>
                 
-                <div class="animation-container" id="animation-container"><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 39.7601%; background-color: rgb(82, 119, 224); animation: 1.5s linear 0.470206s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 68.6158%; background-color: rgb(224, 82, 206); animation: 1.5s linear 0.347292s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 79.6393%; background-color: rgb(224, 213, 82); animation: 1.5s linear 0.114078s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 10.2115%; background-color: rgb(224, 88, 82); animation: 1.5s linear 0.133526s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 31.2875%; background-color: rgb(82, 224, 172); animation: 1.5s linear 0.319919s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 53.1309%; background-color: rgb(82, 101, 224); animation: 1.5s linear 0.140301s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 75.0245%; background-color: rgb(189, 82, 224); animation: 1.5s linear 0.126545s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 57.8838%; background-color: rgb(175, 224, 82); animation: 1.5s linear 0.494886s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 71.0128%; background-color: rgb(82, 224, 224); animation: 1.5s linear 0.323611s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 70.7512%; background-color: rgb(224, 82, 110); animation: 1.5s linear 0.30747s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 30.5252%; background-color: rgb(224, 82, 141); animation: 1.5s linear 0.495385s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 83.1507%; background-color: rgb(82, 224, 214); animation: 1.5s linear 0.16861s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 30.328%; background-color: rgb(224, 148, 82); animation: 1.5s linear 0.3379s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 95.2348%; background-color: rgb(82, 160, 224); animation: 1.5s linear 0.0992478s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 97.7254%; background-color: rgb(82, 129, 224); animation: 1.5s linear 0.473261s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 60.2807%; background-color: rgb(224, 169, 82); animation: 1.5s linear 0.15522s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 52.9058%; background-color: rgb(82, 104, 224); animation: 1.5s linear 0.495998s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 3.6397%; background-color: rgb(95, 82, 224); animation: 1.5s linear 0.196308s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 27.2751%; background-color: rgb(224, 170, 82); animation: 1.5s linear 0.37359s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 0.939687%; background-color: rgb(82, 191, 224); animation: 1.5s linear 0.186111s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 50.8153%; background-color: rgb(82, 220, 224); animation: 1.5s linear 0.30796s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 89.6869%; background-color: rgb(165, 82, 224); animation: 1.5s linear 0.095353s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 66.7127%; background-color: rgb(82, 224, 151); animation: 1.5s linear 0.429097s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 2.25187%; background-color: rgb(224, 194, 82); animation: 1.5s linear 0.146786s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 83.6759%; background-color: rgb(82, 224, 85); animation: 1.5s linear 0.391626s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 28.5014%; background-color: rgb(202, 82, 224); animation: 1.5s linear 0.20952s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 33.5239%; background-color: rgb(82, 224, 157); animation: 1.5s linear 0.00443621s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 41.6587%; background-color: rgb(88, 224, 82); animation: 1.5s linear 0.479564s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 78.5945%; background-color: rgb(82, 224, 191); animation: 1.5s linear 0.0855651s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 85.3078%; background-color: rgb(82, 142, 224); animation: 1.5s linear 0.203581s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 38.5693%; background-color: rgb(146, 224, 82); animation: 1.5s linear 0.114826s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 95.9008%; background-color: rgb(199, 224, 82); animation: 1.5s linear 0.460063s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 33.1013%; background-color: rgb(165, 224, 82); animation: 1.5s linear 0.478667s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 42.0109%; background-color: rgb(82, 173, 224); animation: 1.5s linear 0.00986879s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 41.5698%; background-color: rgb(82, 149, 224); animation: 1.5s linear 0.38175s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 34.1354%; background-color: rgb(82, 224, 173); animation: 1.5s linear 0.0761748s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 25.1908%; background-color: rgb(194, 224, 82); animation: 1.5s linear 0.45214s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 60.3218%; background-color: rgb(224, 82, 163); animation: 1.5s linear 0.177739s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 3.29233%; background-color: rgb(147, 82, 224); animation: 1.5s linear 0.22057s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 25.9329%; background-color: rgb(125, 82, 224); animation: 1.5s linear 0.255531s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 88.6546%; background-color: rgb(220, 224, 82); animation: 1.5s linear 0.164943s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 53.4124%; background-color: rgb(224, 206, 82); animation: 1.5s linear 0.489134s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 32.7048%; background-color: rgb(82, 224, 210); animation: 1.5s linear 0.259562s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 98.5939%; background-color: rgb(224, 222, 82); animation: 1.5s linear 0.228281s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 57.6729%; background-color: rgb(224, 85, 82); animation: 1.5s linear 0.312233s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 34.1747%; background-color: rgb(224, 136, 82); animation: 1.5s linear 0.327338s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 19.0054%; background-color: rgb(135, 224, 82); animation: 1.5s linear 0.107s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 48.7145%; background-color: rgb(134, 82, 224); animation: 1.5s linear 0.325472s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 30.3364%; background-color: rgb(224, 183, 82); animation: 1.5s linear 0.485148s 1 normal forwards running confetti-fall;"></div><div class="confetti" style="position: fixed; top: 0px; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9999; left: 31.0767%; background-color: rgb(82, 94, 224); animation: 1.5s linear 0.0860488s 1 normal forwards running confetti-fall;"></div></div>
+                <div class="animation-container" id="animation-container"></div>
             </div>
             
             <div class="score-container">
@@ -538,154 +547,177 @@
 
 
         // Initialize the game
-        function initGame() {
-            const selectedUnit = unitSelect.value;
-            
-            currentTerms = selectedUnit === 'all' 
-                ? [...vocabularyData].sort(() => Math.random() - 0.5)
-                : vocabularyData.filter(term => term.unit === selectedUnit).sort(() => Math.random() - 0.5);
-            
-            currentTermIndex = 0;
-            correctAnswers = 0;
-            totalAttempts = 0;
-            gameActive = true;
-            userInput = [];
-            editableIndices = [];
-            
-            updateScore();
-            showTerm(currentTermIndex);
-            completedScreen.style.display = 'none';
-            messageEl.className = 'message';
-            
-            document.addEventListener('keydown', handleKeyDown);
-        }
+function initGame() {
+    const selectedUnit = unitSelect.value;
+        // Make sure we clean up any old event listeners
+    document.removeEventListener('keydown', handleKeyDown);
+    // Add the new one
+    document.addEventListener('keydown', handleKeyDown);
+    currentTerms = selectedUnit === 'all' 
+        ? [...vocabularyData].sort(() => Math.random() - 0.5)
+        : vocabularyData.filter(term => term.unit === selectedUnit).sort(() => Math.random() - 0.5);
+    
+    currentTermIndex = 0;
+    correctAnswers = 0;
+    totalAttempts = 0;
+    gameActive = true;
+    userInput = [];
+    editableIndices = [];
+    
+    // Clear any leftover confetti
+    animationContainer.innerHTML = '';
+    
+    updateScore();
+    showTerm(currentTermIndex);
+    completedScreen.style.display = 'none';
+    messageEl.className = 'message';
+    
+    document.addEventListener('keydown', handleKeyDown);
+}
 
         // Create letter boxes for the current term
-        function createLetterBoxes(term) {
-            letterBoxesContainer.innerHTML = '';
-            currentBlankIndex = 1;
-            userInput = Array(term.length).fill('');
-            editableIndices = [];
-            
-            const letters = term.split('');
-            letterCount.textContent = term.replace(/[^a-zA-Z]/g, '').length;
-            
-            const rows = [];
-            let currentRow = [];
-            let currentWord = [];
-            
-            for (let i = 0; i < letters.length; i++) {
-                const isLetter = /[a-zA-Z]/.test(letters[i]);
-                
-                if (i === 0) {
-                    currentWord.push({
-                        index: i,
-                        char: letters[i],
-                        type: 'first-letter',
-                        isLetter: true
-                    });
-                    userInput[i] = letters[i];
-                } else if (!isLetter) {
-                    currentWord.push({
-                        index: i,
-                        char: letters[i],
-                        type: 'fixed',
-                        isLetter: false
-                    });
-                    userInput[i] = letters[i];
-                    
-                    if (letters[i] === ' ') {
-                        currentRow.push(currentWord);
-                        currentWord = [];
-                    }
-                } else {
-                    currentWord.push({
-                        index: i,
-                        char: letters[i],
-                        type: 'blank',
-                        isLetter: true
-                    });
-                    userInput[i] = '';
-                    editableIndices.push(i);
-                }
-            }
-            
-            if (currentWord.length > 0) {
-                currentRow.push(currentWord);
-            }
-            
-            rows.push(currentRow);
-            
-            rows.forEach(row => {
-                const rowElement = document.createElement('div');
-                rowElement.className = 'letter-boxes-row';
-                
-                row.forEach(word => {
-                    const wordGroup = document.createElement('div');
-                    wordGroup.className = 'word-group';
-
-                    word.forEach(letter => {
-                        const letterBox = document.createElement('div');
-                        letterBox.className = `letter-box ${letter.type}`;
-                        letterBox.dataset.index = letter.index;
-
-                        if (letter.type === 'first-letter') {
-                            letterBox.textContent = letter.char;
-                        } else if (letter.type === 'fixed') {
-                            letterBox.textContent = letter.char;
-                        } else if (letter.type === 'blank') {
-                            letterBox.innerHTML = '<span class="underscore">_</span>';
-                            letterBox.addEventListener('click', () => {
-                                currentBlankIndex = letter.index;
-                                updateActiveBlank();
-                            });
-                        }
-
-                        wordGroup.appendChild(letterBox);
-                    });
-
-                    rowElement.appendChild(wordGroup);
-                });
-                
-                letterBoxesContainer.appendChild(rowElement);
+function createLetterBoxes(term) {
+    letterBoxesContainer.innerHTML = ''; // Clear any existing content
+    currentBlankIndex = 1;
+    userInput = Array(term.length).fill('');
+    editableIndices = [];
+    
+    const letters = term.split('');
+    letterCount.textContent = term.replace(/[^a-zA-Z]/g, '').length;
+    
+    const rows = [];
+    let currentRow = [];
+    let currentWord = [];
+    
+    for (let i = 0; i < letters.length; i++) {
+        const isLetter = /[a-zA-Z]/.test(letters[i]);
+        
+        if (i === 0) {
+            currentWord.push({
+                index: i,
+                char: letters[i],
+                type: 'first-letter',
+                isLetter: true
             });
+            userInput[i] = letters[i];
+        } else if (!isLetter) {
+            let boxType = 'fixed';
+            if (letters[i] === ' ') {
+                boxType = 'fixed-space';
+            } else if (letters[i] === '-') {
+                boxType = 'fixed-hyphen';
+            }
             
-            if (editableIndices.length > 0) {
-                currentBlankIndex = editableIndices[0];
-                updateActiveBlank();
+            currentWord.push({
+                index: i,
+                char: letters[i],
+                type: boxType,
+                isLetter: false
+            });
+            userInput[i] = letters[i];
+            
+            if (letters[i] === ' ' || letters[i] === '-') {
+                currentRow.push(currentWord);
+                currentWord = [];
             }
+        } else {
+            currentWord.push({
+                index: i,
+                char: letters[i],
+                type: 'blank',
+                isLetter: true
+            });
+            userInput[i] = '';
+            editableIndices.push(i);
         }
+    }
+    
+    if (currentWord.length > 0) {
+        currentRow.push(currentWord);
+    }
+    
+    rows.push(currentRow);
+    
+    rows.forEach(row => {
+        const rowElement = document.createElement('div');
+        rowElement.className = 'letter-boxes-row';
+        
+        row.forEach(word => {
+            const wordGroup = document.createElement('div');
+            wordGroup.className = 'word-group';
 
-        function fillBlank(char) {
-            const box = document.querySelector(`[data-index="${currentBlankIndex}"]`);
-            if (!box) return;
+            word.forEach(letter => {
+                const letterBox = document.createElement('div');
+                letterBox.className = `letter-box ${letter.type}`;
+                letterBox.dataset.index = letter.index;
 
-            box.textContent = char;
-            box.classList.remove('blank');
-            box.classList.add('user-input');
-            userInput[currentBlankIndex] = char;
-
-            const currentIdx = editableIndices.indexOf(currentBlankIndex);
-            if (currentIdx < editableIndices.length - 1) {
-                currentBlankIndex = editableIndices[currentIdx + 1];
-                updateActiveBlank();
-            }
-        }
-
-        function handleBackspace() {
-            if (userInput[currentBlankIndex] === '') {
-                const currentIdx = editableIndices.indexOf(currentBlankIndex);
-                if (currentIdx > 0) {
-                    currentBlankIndex = editableIndices[currentIdx - 1];
-                    updateActiveBlank();
-                    return;
+                if (letter.type === 'first-letter' || letter.type.includes('fixed')) {
+                    letterBox.textContent = letter.char;
+                    letterBox.style.pointerEvents = 'none'; // Make non-interactive
+                } else if (letter.type === 'blank') {
+                    letterBox.innerHTML = '<span class="underscore">_</span>';
+                    // Add click handler
+                    letterBox.addEventListener('click', () => {
+                        currentBlankIndex = letter.index;
+                        updateActiveBlank();
+                    });
                 }
-            }
-            
-            clearBlank();
-        }
 
-        function clearBlank() {
+                wordGroup.appendChild(letterBox);
+            });
+
+            rowElement.appendChild(wordGroup);
+        });
+        
+        letterBoxesContainer.appendChild(rowElement);
+    });
+    
+    if (editableIndices.length > 0) {
+        currentBlankIndex = editableIndices[0];
+        updateActiveBlank();
+    }
+}
+
+function fillBlank(char) {
+    const box = document.querySelector(`[data-index="${currentBlankIndex}"]`);
+    if (!box) return;
+
+    // Always replace the content
+    box.textContent = char;
+    box.classList.remove('blank');
+    box.classList.add('user-input');
+    userInput[currentBlankIndex] = char;
+
+    // Move to next editable index
+    const currentIdx = editableIndices.indexOf(currentBlankIndex);
+    if (currentIdx < editableIndices.length - 1) {
+        currentBlankIndex = editableIndices[currentIdx + 1];
+        updateActiveBlank();
+    }
+}
+
+function handleKeyDown(e) {
+    if (!gameActive) return;
+
+    // Prevent default for spacebar
+    if (e.key === ' ') {
+        e.preventDefault();
+        return;
+    }
+
+    if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+        e.preventDefault(); // Prevent default to avoid double input
+        fillBlank(e.key);
+    } else if (e.key === 'Backspace') {
+        e.preventDefault();
+        handleBackspace();
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        checkAnswer();
+    }
+}
+
+function clearBlank() {
             const blank = document.querySelector(`[data-index="${currentBlankIndex}"]`);
             if (blank && blank.classList.contains('user-input')) {
                 blank.textContent = '';
@@ -727,78 +759,82 @@ function clearAllBlanks() {
     messageEl.textContent = '';
 }
 
+function handleBackspace() {
+    const currentIdx = editableIndices.indexOf(currentBlankIndex);
+    const currentValue = userInput[currentBlankIndex];
 
-
-
-        function updateActiveBlank() {
-            const blanks = document.querySelectorAll('.blank, .user-input');
-            blanks.forEach(blank => {
-                blank.style.boxShadow = 'none';
-            });
-            
-            const currentBlank = document.querySelector(`[data-index="${currentBlankIndex}"]`);
-            if (currentBlank) {
-                currentBlank.style.boxShadow = '0 0 0 3px #3498db';
-            }
-        }
-
-        function showTerm(index) {
-            if (index >= currentTerms.length) {
-                endGame();
-                return;
-            }
-            
-            const term = currentTerms[index];
-            dateHint.textContent = `Date: ${term.date}`;
-            termDescription.textContent = term.description;
-            
-            createLetterBoxes(term.term);
-            
-            progressText.textContent = `${index + 1}/${currentTerms.length}`;
-            progressFill.style.width = `${(index / currentTerms.length) * 100}%`;
-            
-            messageEl.className = 'message';
-        }
-
-        function handleKeyDown(e) {
-    if (!gameActive) return;
-
-    // Prevent spacebar from triggering anything
-    if (e.key === ' ') {
-        e.preventDefault();
-        return;
-    }
-
-    if (e.key.length === 1 && e.key.match(/[a-z]/i)) {
-        fillBlank(e.key);
-    } else if (e.key === 'Backspace') {
-        handleBackspace();
-    } else if (e.key === 'Enter') {
-        e.preventDefault();
-        checkAnswer();
+    // If there's a letter in current box, delete it
+    if (currentValue !== '') {
+        clearBlank();
+    } else if (currentIdx > 0) {
+        // Move to previous and clear that
+        currentBlankIndex = editableIndices[currentIdx - 1];
+        clearBlank();
+        updateActiveBlank();
     }
 }
 
+      
+function updateActiveBlank() {
+    // Remove highlight from all blanks
+    document.querySelectorAll('.blank, .user-input').forEach(box => {
+        box.style.boxShadow = 'none';
+        box.style.border = box.classList.contains('user-input') 
+            ? '2px solid #3498db' 
+            : '2px dashed #3498db';
+        box.style.transform = 'none';
+    });
+    
+    // Highlight current blank
+    const currentBlank = document.querySelector(`[data-index="${currentBlankIndex}"]`);
+    if (currentBlank) {
+        currentBlank.style.boxShadow = '0 0 10px rgba(52, 152, 219, 0.7)';
+        currentBlank.style.border = '2px solid #3498db';
+        currentBlank.style.transform = 'scale(1.05)';
+    }
+}
+
+function showTerm(index) {
+    if (index >= currentTerms.length) {
+        endGame();
+        return;
+    }
+    
+    const term = currentTerms[index];
+    dateHint.textContent = `Date: ${term.date}`;
+    termDescription.textContent = term.description;
+    
+    createLetterBoxes(term.term);
+    
+    // Fix: Show current term as (index + 1) but calculate progress as (index / total)
+    progressText.textContent = `${index + 1}/${currentTerms.length}`;
+    progressFill.style.width = `${(index / currentTerms.length) * 100}%`;
+    
+    messageEl.className = 'message';
+}
+
 function checkAnswer() {
+    totalAttempts++; // Increment attempts counter
+    updateScore(); // Update the score display
+    
     const term = currentTerms[currentTermIndex].term;
     let allCorrect = true;
 
     const boxes = document.querySelectorAll('.letter-box');
-
     boxes.forEach(box => {
         const index = parseInt(box.dataset.index);
         if (isNaN(index)) return;
 
-        // --- IMPORTANT: don't change fixed/non-editable boxes' visuals ---
-        if (box.classList.contains('fixed') || box.classList.contains('first-letter')) {
-            // still skip them from styling, they remain as provided in your markup
+        // Skip non-letter boxes (spaces, hyphens, etc.)
+        if (box.classList.contains('fixed') || box.classList.contains('fixed-space') || box.classList.contains('fixed-hyphen')) {
             return;
         }
 
         const expected = term[index];
         const actual = userInput[index];
 
-        // Only style editable boxes
+        if (!expected) return;
+
         box.style.transition = 'background-color 0.3s ease, border-color 0.3s ease';
 
         if (actual && actual.toLowerCase() === expected.toLowerCase()) {
@@ -816,27 +852,34 @@ function checkAnswer() {
     });
 
     if (allCorrect) {
+        correctAnswers++; // Increment correct answers counter
+        updateScore(); // Update the score display
+        
         correctSound.currentTime = 0;
         correctSound.play();
         messageEl.textContent = 'Correct! Well done!';
         messageEl.className = 'message success';
 
+        // Clear any existing confetti before showing new ones
         animationContainer.innerHTML = '';
-        for (let i = 0; i < 50; i++) {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.position = 'fixed';
-            confetti.style.top = '0';
-            confetti.style.width = '8px';
-            confetti.style.height = '8px';
-            confetti.style.borderRadius = '50%';
-            confetti.style.pointerEvents = 'none';
-            confetti.style.zIndex = '9999';
-            confetti.style.left = `${Math.random() * 100}%`;
-            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
-            confetti.style.animation = `confetti-fall 1.5s linear forwards`;
-            confetti.style.animationDelay = `${Math.random() * 0.5}s`;
-            animationContainer.appendChild(confetti);
+
+        if (gameActive) {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.position = 'fixed';
+                confetti.style.top = '0';
+                confetti.style.width = '8px';
+                confetti.style.height = '8px';
+                confetti.style.borderRadius = '50%';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '9999';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                confetti.style.animation = `confetti-fall 1.5s linear forwards`;
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                animationContainer.appendChild(confetti);
+            }
         }
 
         setTimeout(() => {
@@ -878,6 +921,3 @@ function checkAnswer() {
         // Initialize the game on page load
         window.addEventListener('DOMContentLoaded', initGame);
     </script>
-
-
-</body></html>
