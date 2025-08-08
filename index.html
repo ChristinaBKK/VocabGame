@@ -53,6 +53,93 @@
             max-width: 600px;
             margin: 0 auto;
         }
+      .custom-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    z-index: 1000; /* Add this to ensure it appears above other elements */
+}
+      /* Make all dropdown text normal weight */
+.dropdown-toggle,
+.dropdown-menu,
+.dropdown-item,
+.dropdown-item span {
+    font-weight: normal !important; /* Forces normal weight */
+}
+
+/* If you want the button text to remain slightly bold */
+.dropdown-toggle {
+    font-weight: 500; /* Semi-bold instead of bold */
+}
+
+/* Specific style for checkbox labels */
+.dropdown-item span {
+    font-weight: normal;
+}
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 200px;
+}
+
+.dropdown-toggle {
+    background-color: white;
+    color: #2c3e50;
+    padding: 10px 15px;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-toggle:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    z-index: 1000;
+    margin-top: 5px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #2c3e50;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f2f6;
+}
+
+.dropdown-item input {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Add this to ensure the dropdown appears above the game container */
+.container {
+    position: relative;
+    z-index: 1;
+}
 		.footer {
    			text-align: center;
     		padding: 10px;
@@ -78,7 +165,7 @@
         .selector-container label {
             font-weight: 600;
             color: #2c3e50;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         select {
@@ -401,19 +488,32 @@
             <p>Test your knowledge of historical terms and concepts</p>
         </div>
         
-        <div class="unit-selector">
-            <div class="selector-container">
-                <label for="unit-select"><i class="fas fa-book-open"></i> Select Unit:</label>
-                <select id="unit-select">
-                    <option value="all">All Units</option>
-                    <option value="1.2">Unit 1.2</option>
-                    <option value="1.3">Unit 1.3</option>
-                </select>
+<div class="unit-selector">
+    <div class="selector-container">
+        <label><i class="fas fa-book-open"></i> Select Unit(s):</label>
+        <div class="custom-dropdown">
+            <button class="dropdown-toggle" id="dropdown-toggle">
+                <span id="dropdown-text">All Units</span>
+                <i class="fas fa-caret-down"></i>
+            </button>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <label class="dropdown-item">
+                    <input type="checkbox" class="unit-option" value="all" checked> 
+                    <span>All Units</span>
+                </label>
+                <label class="dropdown-item">
+                    <input type="checkbox" class="unit-option" value="1.2"> 
+                    <span>Unit 1.2</span>
+                </label>
+                <label class="dropdown-item">
+                    <input type="checkbox" class="unit-option" value="1.3"> 
+                    <span>Unit 1.3</span>
+                </label>
             </div>
         </div>
-      
-        <audio id="correct-sound" src="correct.mp3" preload="auto"></audio>
-  		<audio id="wrong-sound" src="wrong.mp3" preload="auto"></audio>
+    </div>
+</div>
+
       
         <div class="game-container">
             <div class="progress-container">
@@ -546,18 +646,88 @@ const progressFill = document.querySelector('.progress-fill');
       	const correctSound = document.getElementById('correct-sound');
 		const wrongSound = document.getElementById('wrong-sound');
 
+      // Dropdown functionality
+function setupDropdown() {
+    const dropdownToggle = document.getElementById('dropdown-toggle');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const unitOptions = document.querySelectorAll('.unit-option');
+    const dropdownText = document.getElementById('dropdown-text');
+
+    if (!dropdownToggle || !dropdownMenu) return;
+
+    // Toggle dropdown menu
+    dropdownToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+        dropdownMenu.classList.remove('show');
+    });
+
+    // Prevent dropdown from closing when clicking inside
+    dropdownMenu.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // Handle checkbox changes
+    unitOptions.forEach(option => {
+        option.addEventListener('change', function() {
+            if (this.value === 'all' && this.checked) {
+                // Uncheck other options when "All" is selected
+                unitOptions.forEach(opt => {
+                    if (opt.value !== 'all') opt.checked = false;
+                });
+            } else if (this.value !== 'all' && this.checked) {
+                // Uncheck "All" when specific units are selected
+                document.querySelector('.unit-option[value="all"]').checked = false;
+            }
+            
+            updateDropdownText();
+            initGame();
+        });
+    });
+
+    // Update dropdown text based on selections
+    function updateDropdownText() {
+        const selected = Array.from(document.querySelectorAll('.unit-option:checked')).map(opt => opt.value);
+        
+        if (selected.includes('all') || selected.length === 0) {
+            dropdownText.textContent = 'All Units';
+        } else if (selected.length === 1) {
+            dropdownText.textContent = `Unit ${selected[0]}`;
+        } else {
+            dropdownText.textContent = `${selected.length} Units Selected`;
+        }
+    }
+
+    // Initialize dropdown text
+    updateDropdownText();
+}
 
         // Initialize the game
 function initGame() {
-    const selectedUnit = unitSelect.value;
-        // Make sure we clean up any old event listeners
-    document.removeEventListener('keydown', handleKeyDown);
-    // Add the new one
-    document.addEventListener('keydown', handleKeyDown);
-    currentTerms = selectedUnit === 'all' 
-        ? [...vocabularyData].sort(() => Math.random() - 0.5)
-        : vocabularyData.filter(term => term.unit === selectedUnit).sort(() => Math.random() - 0.5);
-    
+    // Get selected units from checkboxes
+    const selectedUnits = Array.from(document.querySelectorAll('.unit-option:checked'))
+        .map(checkbox => checkbox.value)
+        .filter(value => value !== 'all'); // Exclude 'all' from the actual selection
+
+    // Filter terms based on selected units
+    currentTerms = [];
+    if (selectedUnits.length === 0 || document.querySelector('.unit-option[value="all"]').checked) {
+        // If "All Units" is checked or nothing selected, use all terms
+        currentTerms = [...vocabularyData];
+    } else {
+        // Otherwise use only selected units
+        selectedUnits.forEach(unit => {
+            const unitTerms = vocabularyData.filter(term => term.unit === unit);
+            currentTerms.push(...unitTerms);
+        });
+    }
+
+    // Rest of your initGame code...
+    currentTerms.sort(() => Math.random() - 0.5);
     currentTermIndex = 0;
     correctAnswers = 0;
     totalAttempts = 0;
@@ -565,9 +735,7 @@ function initGame() {
     userInput = [];
     editableIndices = [];
     
-    // Clear any leftover confetti
     animationContainer.innerHTML = '';
-    
     updateScore();
     showTerm(currentTermIndex);
     completedScreen.style.display = 'none';
@@ -575,6 +743,7 @@ function initGame() {
     
     document.addEventListener('keydown', handleKeyDown);
 }
+
 
         // Create letter boxes for the current term
 function createLetterBoxes(term) {
@@ -811,7 +980,7 @@ function showTerm(index) {
     const progressPercent = (index / currentTerms.length) * 100;
     progressFill.style.width = `${progressPercent}%`;
 
-    progressText.textContent = `${index}/${currentTerms.length}`;
+    progressText.textContent = `${index+1}/${currentTerms.length}`;
 
     messageEl.className = 'message';
 }
@@ -915,12 +1084,89 @@ function checkAnswer() {
             document.removeEventListener('keydown', handleKeyDown);
         }
 
-        // Event Listeners
-        unitSelect.addEventListener('change', initGame);
-        submitBtn.addEventListener('click', checkAnswer);
-        restartBtn.addEventListener('click', initGame);
-        clearBtn.addEventListener('click', clearAllBlanks);
+    // Event Listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize dropdown functionality
+    const dropdownToggle = document.getElementById('dropdown-toggle');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const unitOptions = document.querySelectorAll('.unit-option');
+    const dropdownText = document.getElementById('dropdown-text');
+    const selectAll = document.querySelector('.unit-option[value="all"]');
 
-        // Initialize the game on page load
-        window.addEventListener('DOMContentLoaded', initGame);
+    // Verify elements exist
+    if (!dropdownToggle || !dropdownMenu || !selectAll || !dropdownText) {
+        console.error('Required dropdown elements not found');
+        return;
+    }
+
+    // Toggle dropdown menu
+    dropdownToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+        dropdownMenu.classList.remove('show');
+    });
+
+    // Prevent dropdown from closing when clicking inside
+    dropdownMenu.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // Update dropdown text function
+    function updateDropdownText() {
+        const selected = Array.from(document.querySelectorAll('.unit-option:checked'))
+            .filter(opt => opt.value !== 'all')
+            .map(opt => opt.value);
+        
+        if (selected.length === 0 || selectAll.checked) {
+            dropdownText.textContent = 'All Units';
+        } else if (selected.length === 1) {
+            dropdownText.textContent = `Unit ${selected[0]}`;
+        } else {
+            dropdownText.textContent = `${selected.length} Units Selected`;
+        }
+    }
+
+    // Handle checkbox changes
+    unitOptions.forEach(option => {
+        option.addEventListener('change', function() {
+            if (this.value === 'all') {
+                // When "All Units" is changed, update all other checkboxes
+                const isChecked = this.checked;
+                unitOptions.forEach(opt => {
+                    if (opt.value !== 'all') {
+                        opt.checked = isChecked;
+                    }
+                });
+            } else {
+                // When any other checkbox is changed
+                selectAll.checked = false;
+                
+                // Check if all units are now selected
+                const allChecked = Array.from(unitOptions)
+                    .filter(opt => opt.value !== 'all')
+                    .every(opt => opt.checked);
+                
+                if (allChecked) {
+                    selectAll.checked = true;
+                }
+            }
+            
+            updateDropdownText();
+            initGame();
+        });
+    });
+
+    // Initialize game and dropdown text
+    updateDropdownText();
+    initGame();
+});
+
+// Other event listeners
+submitBtn.addEventListener('click', checkAnswer);
+restartBtn.addEventListener('click', initGame);
+clearBtn.addEventListener('click', clearAllBlanks);
     </script>
