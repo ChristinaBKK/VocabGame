@@ -186,8 +186,8 @@
         }
         
         .game-container {
-            padding: 2.5rem;
-            min-height: 400px;
+            padding: 1.2rem;
+            min-height: 300px;
         }
         
         .progress-container {
@@ -226,8 +226,8 @@
             background-color: white;
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            padding: 2rem;
-            margin-bottom: 2rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
             border: 1px solid #e0e0e0;
         }
         
@@ -343,30 +343,6 @@
             background: linear-gradient(90deg, #2980b9 0%, #3498db 100%);
         }
         
-        .message {
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-weight: 600;
-            text-align: center;
-            opacity: 0;
-            transition: all 0.4s ease;
-        }
-        
-        .success {
-            background: linear-gradient(90deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.15));
-            color: #27ae60;
-            border: 2px solid #2ecc71;
-            opacity: 1;
-        }
-        
-        .error {
-            background: linear-gradient(90deg, rgba(231, 76, 60, 0.15), rgba(192, 57, 43, 0.15));
-            color: #c0392b;
-            border: 2px solid #e74c3c;
-            opacity: 1;
-        }
-        
         .confetti {
             position: absolute;
             width: 10px;
@@ -427,7 +403,34 @@
             flex-wrap: nowrap;
             gap: 10px;
         }
-        
+        .completed-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
         @keyframes confetti-fall {
             to {
                 transform: translateY(100vh);
@@ -479,6 +482,38 @@
                 gap: 15px;
             }
         }
+      /* Enhanced confetti */
+.confetti {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Completion screen styling */
+.completed h2 {
+    color: #27ae60;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.completed p {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+}
     </style>
 
 
@@ -513,7 +548,21 @@
         </div>
     </div>
 </div>
+      
+      
 
+      <div class="completed-popup" id="completed-popup" style="display: none;">
+  <div class="popup-content">
+    <h3>Unit Completed!</h3>
+    <p>Would you like to proceed to the next chapter?</p>
+    <div class="popup-buttons">
+      <button id="next-chapter-btn" class="btn">Next Chapter</button>
+      <button id="stay-here-btn" class="btn" style="background: linear-gradient(90deg, #e74c3c, #c0392b);">
+        Redo this Chapter
+      </button>
+    </div>
+  </div>
+</div>
       
         <div class="game-container">
             <div class="progress-container">
@@ -539,7 +588,7 @@
                     <button class="btn" id="clear-btn" style="background: linear-gradient(90deg, #e74c3c, #c0392b);">Clear</button>
                 </div>
                 
-                <div class="message" id="message">Correct! Well done!</div>
+                <div class="message" id="message"></div>
                 
                 <div class="animation-container" id="animation-container"></div>
             </div>
@@ -564,50 +613,66 @@
         </div>
         
         <div class="footer">
-            <p>DSAS Secondary © 2025 | Educational Tool for Students</p>
+            <p>Dr. Christina Feng - DSAS Secondary © 2025 | Educational Tool for Students</p>
         </div>
     </div>
+  <div class="completed" id="completed-screen">
+    <h2><i class="fas fa-trophy"></i> Congratulations!</h2>
+    <p>You've completed the entire course!</p>
+    <p>Final score: <span id="final-score">0</span>/<span id="total-terms">0</span></p>
+    <div class="completion-buttons">
+        <button class="btn restart-btn" id="restart-btn">Restart Course</button>
+        <button class="btn review-btn" id="review-btn">Review All Terms</button>
+    </div>
+</div>
 
     <script>
         // Vocabulary data
         const vocabularyData = [
             {
-                unit: "1.2",
+              chapter: 1,
+                	unit: "1.2",
                 date: "~10,000 ya",
                 term: "Bering Strait Land Bridge",
                 description: "Settlement of the Americas likely began as humans crossed from Asia into North America during the last ice age when sea levels were lower exposed a land bridge between the two continents."
             },
             {
+               chapter: 1,
                 unit: "1.2",
                 date: "~9000 ya",
                 term: "Maize",
                 description: "Corn, a new-world crop first domesticated in modern day Mexico which played an important role in Mayan, Aztec, and many North American indigenous societies."
             },
             {
+              chapter: 1,
                 unit: "1.2",
                 date: "~1660-1830s CE",
                 term: "Iroquois Confederation",
                 description: "A political union between various Native American peoples of the northeastern United States also known as Haudenosauanee. Members included Seneca, Cayuga, Mohawk, Onondaga, Oneida, and later the Tuscaroras."
             },
             {
+              chapter: 2,
                 unit: "1.3",
                 date: "1492 CE",
                 term: "Christopher Columbus",
                 description: "Genoese sponsored by Spain in 1492, aimed to find a westward route to Asia but inadvertently discovered the Americas. His voyages marked the beginning of sustained European contact with the New World, impacting both regions significantly."
             },
             {
+              chapter: 2,
                 unit: "1.3",
                 date: "1517-today",
                 term: "Protestant Reformation",
                 description: "Beginning in the early 16th century, this movement aimed to reform the Catholic Church and led to the emergence of various denominations. This movement affected religious beliefs, political power, and migration patterns."
             },
             {
+              chapter: 2,
                 unit: "1.3",
                 date: "1648 CE",
                 term: "Nation-States",
                 description: "By the Early Modern period, a new concept of statehood emerged in Europe, marked by centralized governments and defined territories beginning with the Treaty of Westphalia. This drove the Age of Exploration as European powers sought new resources and territories."
             },
             {
+              chapter: 2,
                 unit: "1.3",
                 date: "1494 CE",
                 term: "Treaty of Tordesillas",
@@ -624,6 +689,7 @@
         let currentBlankIndex = 1;
         let userInput = [];
         let editableIndices = [];
+  	    let currentChapter = 1; // Initialize with first chapter
 
         // DOM Elements
         const unitSelect = document.getElementById('unit-select');
@@ -645,6 +711,24 @@ const progressFill = document.querySelector('.progress-fill');
         const totalTerms = document.getElementById('total-terms');
       	const correctSound = document.getElementById('correct-sound');
 		const wrongSound = document.getElementById('wrong-sound');
+      
+      // GLOBAL function so any part of the code can call it
+function updateDropdownText() {
+    const selected = Array.from(document.querySelectorAll('.unit-option:checked'))
+        .filter(opt => opt.value !== 'all')
+        .map(opt => opt.value);
+    
+    const dropdownText = document.getElementById('dropdown-text');
+    const selectAll = document.querySelector('.unit-option[value="all"]');
+
+    if (selected.length === 0 || (selectAll && selectAll.checked)) {
+        dropdownText.textContent = 'All Units';
+    } else if (selected.length === 1) {
+        dropdownText.textContent = `Unit ${selected[0]}`;
+    } else {
+        dropdownText.textContent = `${selected.length} Units Selected`;
+    }
+}
 
       // Dropdown functionality
 function setupDropdown() {
@@ -689,25 +773,13 @@ function setupDropdown() {
         });
     });
 
-    // Update dropdown text based on selections
-    function updateDropdownText() {
-        const selected = Array.from(document.querySelectorAll('.unit-option:checked')).map(opt => opt.value);
-        
-        if (selected.includes('all') || selected.length === 0) {
-            dropdownText.textContent = 'All Units';
-        } else if (selected.length === 1) {
-            dropdownText.textContent = `Unit ${selected[0]}`;
-        } else {
-            dropdownText.textContent = `${selected.length} Units Selected`;
-        }
-    }
-
     // Initialize dropdown text
     updateDropdownText();
 }
 
         // Initialize the game
 function initGame() {
+  
     // Get selected units from checkboxes
     const selectedUnits = Array.from(document.querySelectorAll('.unit-option:checked'))
         .map(checkbox => checkbox.value)
@@ -964,27 +1036,6 @@ function updateActiveBlank() {
     }
 }
 
-function showTerm(index) {
-    if (index >= currentTerms.length) {
-        endGame();
-        return;
-    }
-
-    const term = currentTerms[index];
-    dateHint.textContent = `Date: ${term.date}`;
-    termDescription.textContent = term.description;
-
-    createLetterBoxes(term.term);
-
-    // Update progress bar and text
-    const progressPercent = (index / currentTerms.length) * 100;
-    progressFill.style.width = `${progressPercent}%`;
-
-    progressText.textContent = `${index+1}/${currentTerms.length}`;
-
-    messageEl.className = 'message';
-}
-
 function checkAnswer() {
     totalAttempts++; // Increment attempts counter
     updateScore(); // Update the score display
@@ -1029,7 +1080,7 @@ function checkAnswer() {
         
         correctSound.currentTime = 0;
         correctSound.play();
-        messageEl.textContent = 'Correct! Well done!';
+        //messageEl.textContent = 'Correct! Well done!';
         messageEl.className = 'message success';
 
         // Clear any existing confetti before showing new ones
@@ -1065,7 +1116,7 @@ function checkAnswer() {
     } else {
         wrongSound.currentTime = 0;
         wrongSound.play();
-        messageEl.textContent = 'Not quite. Try again!';
+        //messageEl.textContent = 'Not quite. Try again!';
         messageEl.className = 'message error';
     }
 }
@@ -1074,15 +1125,201 @@ function checkAnswer() {
             correctCount.textContent = correctAnswers;
             attemptsCount.textContent = totalAttempts;
         }
+      
+      function getAvailableChapters() {
+    return [...new Set(vocabularyData
+        .filter(term => term.chapter !== undefined)
+        .map(term => term.chapter)
+    )].sort((a, b) => a - b);
+}
 
-        function endGame() {
-            gameActive = false;
-            progressFill.style.width = '100%';
-            completedScreen.style.display = 'block';
-            finalScore.textContent = correctAnswers;
-            totalTerms.textContent = currentTerms.length;
-            document.removeEventListener('keydown', handleKeyDown);
+function isLastChapter(currentChap) {
+    const chapters = getAvailableChapters();
+    return currentChap >= Math.max(...chapters);
+}
+      
+      function updateChapterDisplay() {
+    const chapterDisplay = document.getElementById('current-chapter');
+    if (chapterDisplay) {
+        chapterDisplay.textContent = currentChapter;
+    }
+}
+      
+function showTerm(index) {
+    if (index >= currentTerms.length) {
+        console.log('showTerm: index out of range, ending game');
+        endGame();
+        return;
+    }
+
+    const term = currentTerms[index];
+    dateHint.textContent = `Date: ${term.date}`;
+    termDescription.textContent = term.description;
+    createLetterBoxes(term.term);
+
+    const progressFill = document.querySelector('.progress-fill');
+    const progressText = document.getElementById('progress-text');
+
+    console.log(`showTerm: Showing term index ${index} of ${currentTerms.length}`);
+    console.log('Progress bar element:', progressFill);
+    console.log('Progress text element:', progressText);
+
+    if (progressFill && progressText) {
+        const progressPercent = ((index) / currentTerms.length) * 100;
+        console.log(`Setting progress bar width to: ${progressPercent}%`);
+        progressFill.style.width = `${progressPercent}%`;
+        progressText.textContent = `${index + 1} / ${currentTerms.length} terms`;
+    } else {
+        console.warn('Progress bar or text element not found!');
+    }
+
+    messageEl.className = 'message';
+}
+      
+function loadChapter(chapterNumber) {
+    currentChapter = chapterNumber;
+    console.log(`Loading chapter ${currentChapter}`);
+
+    // Get units for this chapter
+    const chapterUnits = [...new Set(
+        vocabularyData
+            .filter(term => term.chapter === currentChapter)
+            .map(term => term.unit)
+    )];
+
+    // Update checkboxes
+    const unitOptions = document.querySelectorAll('.unit-option');
+    unitOptions.forEach(opt => {
+        if (opt.value === 'all') {
+            opt.checked = false;
+        } else {
+            opt.checked = chapterUnits.includes(opt.value);
         }
+    });
+
+    updateDropdownText();
+
+    // Load terms for this chapter
+    currentTerms = vocabularyData.filter(term => term.chapter === currentChapter);
+    currentTerms.sort(() => Math.random() - 0.5);
+
+    currentTermIndex = 0;
+    correctAnswers = 0;
+    totalAttempts = 0;
+
+    // Reset progress bar
+    const progressFill = document.querySelector('.progress-fill');
+    const progressText = document.getElementById('progress-text');
+    if (progressFill) progressFill.style.width = '0%';
+    if (progressText) progressText.textContent = `1 / ${currentTerms.length} terms`;
+
+    // Update UI
+    updateChapterDisplay();
+    updateScore();
+    gameActive = true;
+    showTerm(currentTermIndex);
+
+    // Re-enable keyboard
+    document.addEventListener('keydown', handleKeyDown);
+}
+
+function loadNextChapter() {
+    const availableChapters = [...new Set(
+        vocabularyData
+            .map(item => item.chapter)
+            .filter(ch => ch !== undefined)
+    )].sort((a, b) => a - b);
+
+    let currentIndex = availableChapters.indexOf(currentChapter);
+    currentIndex++;
+
+    if (currentIndex < availableChapters.length) {
+        loadChapter(availableChapters[currentIndex]);
+    } else {
+        console.log('No next chapter available — ending game');
+        endGame();
+    }
+}
+
+function restartEntireCourse() {
+    document.getElementById('completed-popup').style.display = 'none';
+    loadChapter(1); // restart at first chapter
+}
+
+function showFinalCompletionCelebration() {
+    // Enhanced confetti effect
+    for (let i = 0; i < 150; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.animation = `confetti-fall ${2 + Math.random() * 3}s linear forwards`;
+        confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+        animationContainer.appendChild(confetti);
+    }
+    
+    // Show completion message
+    completedScreen.style.display = 'block';
+    finalScore.textContent = correctAnswers;
+    totalTerms.textContent = currentTerms.length;
+}
+      
+// Show popup when unit is completed
+function showCompletionPopup() {
+    const popup = document.getElementById('completed-popup');
+    const nextChapterBtn = document.getElementById('next-chapter-btn');
+  	const stayHereBtn = document.getElementById('stay-here-btn');
+    const popupMessage = document.querySelector('.popup-content h3');
+    
+    const chapters = getAvailableChapters();
+    const lastChapter = Math.max(...chapters);
+    
+    if (isLastChapter(currentChapter)) {
+        popupMessage.textContent = "Course Completed! 🎉";
+        nextChapterBtn.textContent = "Restart Course";
+        nextChapterBtn.onclick = restartEntireCourse;
+    } else {
+        popupMessage.textContent = `This Unit Completed!`;
+        nextChapterBtn.textContent = `Continue to the Next Unit`;
+		nextChapterBtn.onclick = function() {
+    loadNextChapter(); 
+    popup.style.display = 'none';
+};
+              stayHereBtn.style.display = 'inline-block'; // Show stay here button
+        stayHereBtn.onclick = function() {
+            popup.style.display = 'none';
+            loadChapter(currentChapter); // reload current chapter (make sure you have this function)
+        };
+
+    }
+    
+    popup.style.display = 'flex';
+}
+
+// Modify your endGame function to show the popup
+function endGame() {
+    gameActive = false;
+    progressFill.style.width = '100%';
+    
+    // Show completion popup first
+    showCompletionPopup();
+    
+    // Then show the final screen if it's truly the end
+    const availableChapters = [...new Set(vocabularyData
+        .map(item => item.chapter)
+        .filter(ch => ch !== undefined)
+    )].sort((a, b) => a - b);
+    
+    const maxChapter = Math.max(...availableChapters);
+    
+    if (currentChapter >= maxChapter) {
+        completedScreen.style.display = 'block';
+        finalScore.textContent = correctAnswers;
+        totalTerms.textContent = currentTerms.length;
+    }
+    
+    document.removeEventListener('keydown', handleKeyDown);
+}
 
     // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
@@ -1114,21 +1351,6 @@ document.addEventListener('DOMContentLoaded', function() {
     dropdownMenu.addEventListener('click', function(e) {
         e.stopPropagation();
     });
-
-    // Update dropdown text function
-    function updateDropdownText() {
-        const selected = Array.from(document.querySelectorAll('.unit-option:checked'))
-            .filter(opt => opt.value !== 'all')
-            .map(opt => opt.value);
-        
-        if (selected.length === 0 || selectAll.checked) {
-            dropdownText.textContent = 'All Units';
-        } else if (selected.length === 1) {
-            dropdownText.textContent = `Unit ${selected[0]}`;
-        } else {
-            dropdownText.textContent = `${selected.length} Units Selected`;
-        }
-    }
 
     // Handle checkbox changes
     unitOptions.forEach(option => {
@@ -1170,3 +1392,4 @@ submitBtn.addEventListener('click', checkAnswer);
 restartBtn.addEventListener('click', initGame);
 clearBtn.addEventListener('click', clearAllBlanks);
     </script>
+</body>
