@@ -118,13 +118,14 @@
             margin-top: 8px;
         }
         
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
-            width: 0%;
-            border-radius: 6px;
-            transition: width 0.5s ease;
-        }
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+    width: 0%;
+    border-radius: 6px;
+    transition: width 0.3s ease; /* Ensure this is present */
+    will-change: width; /* Improves performance */
+}
         
         .progress-text {
             display: flex;
@@ -418,7 +419,7 @@
             <div class="progress-container">
                 <div class="progress-text">
                     <span>Progress</span>
-                    <span id="progress-text">1/7</span>
+                    <span id="progress-text">0/7</span>
                 </div>
                 <div class="progress-bar">
     <div class="progress-fill"></div>
@@ -532,8 +533,8 @@
         const submitBtn = document.getElementById('submit-btn');
         const clearBtn = document.getElementById('clear-btn');
         const messageEl = document.getElementById('message');
-        const progressText = document.getElementById('progress-text');
-        const progressFill = document.getElementById('progress-fill');
+const progressText = document.getElementById('progress-text');
+const progressFill = document.querySelector('.progress-fill');
         const correctCount = document.getElementById('correct-count');
         const attemptsCount = document.getElementById('attempts-count');
         const completedScreen = document.getElementById('completed-screen');
@@ -727,6 +728,7 @@ function clearBlank() {
                 userInput[currentBlankIndex] = '';
             }
         }
+      
 function clearAllBlanks() {
     // Only reset the editable blanks tracked in editableIndices
     for (let i = 0; i < editableIndices.length; i++) {
@@ -773,7 +775,6 @@ function handleBackspace() {
         updateActiveBlank();
     }
 }
-
       
 function updateActiveBlank() {
     // Remove highlight from all blanks
@@ -799,17 +800,19 @@ function showTerm(index) {
         endGame();
         return;
     }
-    
+
     const term = currentTerms[index];
     dateHint.textContent = `Date: ${term.date}`;
     termDescription.textContent = term.description;
-    
+
     createLetterBoxes(term.term);
-    
-    // Fix: Show current term as (index + 1) but calculate progress as (index / total)
-    progressText.textContent = `${index + 1}/${currentTerms.length}`;
-    progressFill.style.width = `${(index / currentTerms.length) * 100}%`;
-    
+
+    // Update progress bar and text
+    const progressPercent = (index / currentTerms.length) * 100;
+    progressFill.style.width = `${progressPercent}%`;
+
+    progressText.textContent = `${index}/${currentTerms.length}`;
+
     messageEl.className = 'message';
 }
 
