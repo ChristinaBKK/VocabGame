@@ -3,8 +3,8 @@ const VocabularyLoader = (() => {
   let vocabularyData = [];
 
   // Fetch JSON data and store it internally
-  function fetchVocabulary(https://christinabkk.github.io/VocabGame/words.json) {
-    return fetch(https://christinabkk.github.io/VocabGame/words.json)
+  function fetchVocabulary(url) {
+    return fetch(url)
       .then(response => response.json())
       .then(data => {
         vocabularyData = data;
