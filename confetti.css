@@ -139,3 +139,4 @@ opacity: 1;
     100% {
       opacity: 0;
       transform: translate3d(var(--tx), var(--ty), var(--tz)) rotateX(720deg) rotateY(720deg);
+    }
