@@ -1,4 +1,10 @@
-const container = document.getElementById('confetti-container');
+function startConfetti() {
+  const container = document.getElementById('confetti-container');
+  if (!container) return;
+
+  // Clear previous confetti
+  container.innerHTML = '';
+
   const confettiCount = 180;
 
   // More colors to pick from
@@ -65,3 +71,4 @@ const container = document.getElementById('confetti-container');
 
     container.appendChild(confetti);
   }
+}
