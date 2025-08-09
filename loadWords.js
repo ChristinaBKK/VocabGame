@@ -1,28 +1,41 @@
-// loadWords.js
+/**
+ * VocabularyLoader - Fetches and manages vocabulary data.
+ * Now uses a Promise-based approach for better async handling.
+ */
 const VocabularyLoader = (() => {
-  let vocabularyData = [];
+    // Private variable to store loaded data
+    let _vocabularyData = [];
 
-  // Fetch JSON data and store it internally
-  function fetchVocabulary(url) {
-    return fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        vocabularyData = data;
-        return vocabularyData; // return data so caller can chain
-      })
-      .catch(error => {
-        console.error('Error loading vocabulary:', error);
-        throw error;
-      });
-  }
+    /**
+     * Fetches vocabulary data from a JSON URL.
+     * @param {string} url - The JSON file URL.
+     * @returns {Promise<Array>} - Resolves with the loaded data.
+     */
+    async function fetchVocabulary(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            _vocabularyData = await response.json();
+            return _vocabularyData; // Return for direct use
+        } catch (error) {
+            console.error('Error loading vocabulary:', error);
+            throw error; // Re-throw for caller to handle
+        }
+    }
 
-  // Getter to access loaded vocabulary data
-  function getVocabulary() {
-    return vocabularyData;
-  }
+    /**
+     * Gets the currently loaded vocabulary data.
+     * @returns {Array} - The loaded vocabulary (empty if not fetched yet).
+     */
+    function getVocabulary() {
+        return _vocabularyData;
+    }
 
-  return {
-    fetchVocabulary,
-    getVocabulary,
-  };
+    // Public API
+    return {
+        fetchVocabulary,
+        getVocabulary,
+    };
 })();
