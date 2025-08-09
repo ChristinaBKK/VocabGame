@@ -1,76 +1,141 @@
-function startConfetti() {
-  const container = document.getElementById('confetti-container');
-  if (!container) return;
-
-  // Clear previous confetti
-  container.innerHTML = '';
-
-  const confettiCount = 180;
-
-  // More colors to pick from
-  const colors = [
-  '#f94144', '#f3722c', '#f9844a', '#f9c74f', '#90be6d', '#43aa8b', '#577590', '#277da1', '#4d908e', '#9c89b8',
-  '#f72585', '#b5179e', '#720026', '#3a0ca3', '#4361ee', '#4895ef', '#4cc9f0', '#f48c06', '#f77f00', '#d00000',
-  '#ffba08', '#faa307', '#f48c06', '#e85d04', '#d00000', '#6a040f', '#370617', '#9d0208', '#dd6e42', '#d4af37',
-  '#c9b037', '#bfa94a', '#e6c26f', '#d1b26f', '#ff6d00', '#ff9100', '#ffc400', '#d4a373', '#a67b5b', '#bb9457'
-];
-
-  // Shapes to randomly assign
-  const shapes = ['shape-rect', 'shape-circle', 'shape-triangle', 'shape-star'];
-
-  function randomRange(min, max) {
-    return Math.random() * (max - min) + min;
+body, html {
+    margin: 0; padding: 0; height: 100vh; width: 100vw;
+    overflow: hidden;
+    background: transparent;
+    perspective: 800px;
   }
 
-  for (let i = 0; i < confettiCount; i++) {
-    const confetti = document.createElement('div');
-    confetti.classList.add('confetti');
-
-    // Pick random color and shape
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const shape = shapes[Math.floor(Math.random() * shapes.length)];
-
-    // Apply color and shape
-    if (shape === 'shape-triangle' || shape === 'shape-star') {
-      // For triangle and star, set color as currentColor and background transparent
-      confetti.style.color = color;
-      confetti.style.background = 'transparent';
-    } else {
-      confetti.style.background = color;
-    }
-    confetti.classList.add(shape);
-
-    if (i % 2 === 0) {
-      confetti.style.left = '0%';
-      confetti.style.bottom = '0%';
-
-      const tx = randomRange(350, 750);
-      const ty = randomRange(-600, -300);
-      const tz = randomRange(-350, 350);
-
-      confetti.style.setProperty('--tx', tx + 'px');
-      confetti.style.setProperty('--ty', ty + 'px');
-      confetti.style.setProperty('--tz', tz + 'px');
-
-      confetti.style.animation = `burst-left ${randomRange(3, 5).toFixed(2)}s forwards`;
-      confetti.style.animationDelay = (i * 0.02) + 's';
-
-    } else {
-      confetti.style.left = '100%';
-      confetti.style.bottom = '0%';
-
-      const tx = randomRange(-750, -350);
-      const ty = randomRange(-600, -300);
-      const tz = randomRange(-350, 350);
-
-      confetti.style.setProperty('--tx', tx + 'px');
-      confetti.style.setProperty('--ty', ty + 'px');
-      confetti.style.setProperty('--tz', tz + 'px');
-
-      confetti.style.animation = `burst-right ${randomRange(3, 5).toFixed(2)}s forwards`;
-      confetti.style.animationDelay = (i * 0.02) + 's';
-    }
-
-    container.appendChild(confetti);
-  }
+.confetti-container {
+position: fixed; /* was probably relative before */
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+pointer-events: none; /* so clicks pass through */
+z-index: 9998;
+overflow: visible;
 }
+.confetti {
+position: absolute;
+width: 12px;
+height: 8px;
+opacity: 1;
+transform-style: preserve-3d;
+will-change: transform, opacity;
+animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* Colors palette */
+.color1 { background: #f94144; }
+.color2 { background: #f3722c; }
+.color3 { background: #f9844a; }
+.color4 { background: #f9c74f; }
+.color5 { background: #90be6d; }
+.color6 { background: #43aa8b; }
+.color7 { background: #577590; }
+.color8 { background: #277da1; }
+.color9 { background: #9c89b8; }
+.color10 { background: #f72585; }
+
+.color11 { background: #b5179e; }
+.color12 { background: #720026; }
+.color13 { background: #3a0ca3; }
+.color14 { background: #4361ee; }
+.color15 { background: #4cc9f0; }
+.color16 { background: #ffd166; }
+.color17 { background: #06d6a0; }
+.color18 { background: #118ab2; }
+.color19 { background: #ef476f; }
+.color20 { background: #ffc43d; }
+
+.color21 { background: #ff6f91; }
+.color22 { background: #ff9671; }
+.color23 { background: #ffc75f; }
+.color24 { background: #f9f871; }
+.color25 { background: #a3d9a5; }
+.color26 { background: #6a994e; }
+.color27 { background: #386641; }
+.color28 { background: #1b4332; }
+.color29 { background: #081c15; }
+.color30 { background: #0f4c5c; }
+
+.color31 { background: #3b6978; }
+.color32 { background: #204051; }
+.color33 { background: #c0d6df; }
+.color34 { background: #f0f3bd; }
+.color35 { background: #f4d35e; }
+.color36 { background: #ee964b; }
+.color37 { background: #f95738; }
+.color38 { background: #1e2022; }
+.color39 { background: #2c3e50; }
+.color40 { background: #34495e; }
+
+.color41 { background: #16a085; }
+.color42 { background: #27ae60; }
+.color43 { background: #2980b9; }
+.color44 { background: #8e44ad; }
+.color45 { background: #2c3e50; }
+.color46 { background: #f39c12; }
+.color47 { background: #d35400; }
+.color48 { background: #c0392b; }
+.color49 { background: #7f8c8d; }
+.color50 { background: #95a5a6; }
+
+
+/* Shapes */
+
+/* Rectangle - default */
+.shape-rect {
+border-radius: 2px;
+opacity: 1;
+}
+
+  /* Circle */
+  .shape-circle {
+    border-radius: 50%;
+    opacity: 1;
+  /* Triangle */
+  .shape-triangle {
+    width: 0;
+    height: 0;
+    opacity: 1;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 14px solid currentColor; /* use color from color class */
+    background: transparent !important;
+  }
+  /* Star shape using clip-path */
+  .shape-star {
+    background: currentColor !important;
+    opacity: 1;
+    clip-path: polygon(
+      50% 0%,
+      61% 35%,
+      98% 35%,
+      68% 57%,
+      79% 91%,
+      50% 70%,
+      21% 91%,
+      32% 57%,
+      2% 35%,
+      39% 35%
+    );
+  }
+
+
+  @keyframes burst-left {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(var(--tx), var(--ty), var(--tz)) rotateX(720deg) rotateY(720deg);
+  }
+ @keyframes burst-right {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(var(--tx), var(--ty), var(--tz)) rotateX(720deg) rotateY(720deg);
