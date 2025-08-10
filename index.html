@@ -482,7 +482,7 @@
     .word-group {
       display: flex;
       flex-wrap: nowrap;
-      gap: 10px;
+      gap: 6px;
     }
 
     .completed-popup {
@@ -579,36 +579,157 @@
       animation: shake 0.3s ease;
     }
 
-    @media (max-width: 768px) {
-      .header h1 {
-        font-size: 1.8rem;
-      }
-
-      .game-container {
-        padding: 1.5rem;
-      }
-
+    @media (max-width: 770px) {
       .letter-box {
-        min-width: 40px;
-        height: 50px;
-        font-size: 1.5rem;
+        min-width: 35px;
+        height: 42px;
+        font-size: 1.3rem;
+        margin: 0 1.5px 4px;
+      }
+
+      .letter-box.fixed-space,
+      .letter-box.fixed-hyphen {
+        min-width: 6px;
+        font-size: 1rem;
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 680px) {
       .letter-box {
-        min-width: 30px;
-        height: 40px;
+        min-width: 25px;
+        height: 30px;
         font-size: 1.2rem;
+        border-radius: 7px;
+        margin: 0 1px 3px;
       }
 
       .letter-box.blank::after {
-        font-size: 1.8rem;
+        font-size: 1.2rem;
       }
 
       .score-container {
         flex-direction: column;
-        gap: 15px;
+        gap: 2px;
+      }
+
+      .hint,
+      .description {
+        font-size: 1rem;
+        line-height: 1.1;
+      }
+
+      .letter-boxes-row {
+        gap: 4px;
+        /* Smallest gap on phones */
+      }
+
+      #completed-popup {
+        display: flex;
+        /* ensure flex */
+        justify-content: center;
+        /* horizontal center */
+        align-items: center;
+        /* vertical center */
+        position: fixed;
+        /* fix on viewport */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        /* dim background */
+        z-index: 10000;
+      }
+
+      #popup-content {
+        position: relative;
+        width: 60%;
+        padding: 0.8rem;
+        font-size: 0.8rem;
+      }
+
+      #completed-popup h2,
+      .completed-popup h3 {
+        font-size: 2rem;
+      }
+
+      #completed-popup .popup-content {
+        font-size: 0.8rem;
+        /* main content */
+      }
+
+      #completed-popup button {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+      }
+
+      .btn {
+        flex: 1;
+        max-width: 140px;
+        padding: 14px 28px;
+        background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .score-container {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 20px;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .score-box {
+        background: linear-gradient(135deg, #f8f9fa, #eef2f7);
+        padding: 12px 25px;
+        border-radius: 8px;
+        min-width: 150px;
+        text-align: center;
+        border: 1px solid #e0e0e0;
+      }
+
+      .score-value {
+        font-size: 1.5rem;
+        color: #3498db;
+        margin-top: 5px;
+      }
+
+      .word-group {
+        gap: 3px;
+      }
+    }
+
+    @media (max-width: 393px) {
+      .letter-box {
+        min-width: 20px;
+        height: 24px;
+        font-size: 1rem;
+        border-radius: 5px;
+        margin: 0 0.5px 2px;
+      }
+
+      .letter-box.fixed-space,
+      .letter-box.fixed-hyphen {
+        min-width: 4px;
+        /* Minimal size */
+      }
+
+      .word-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1px;
+      }
+
+      .hint,
+      .description {
+        font-size: 1.0rem;
+        line-height: 1.0;
       }
     }
 
