@@ -397,7 +397,15 @@
       /* above letter boxes */
     }
 
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
     .btn {
+      flex: 1;
+      max-width: 190px;
       padding: 14px 28px;
       background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
       color: white;
@@ -410,6 +418,10 @@
 
     .btn:hover {
       background: linear-gradient(90deg, #2980b9 0%, #3498db 100%);
+    }
+
+    #clear-btn:hover {
+      background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%) !important;
     }
 
     .confetti {
@@ -487,19 +499,47 @@
     }
 
     .popup-content {
+      position: relative;
+      color: #27ae60;
+      font-size: 2.5rem;
       background-color: white;
-      padding: 2rem;
+      padding: 3rem;
       border-radius: 12px;
       text-align: center;
-      max-width: 400px;
+      max-width: 500px;
+      width: 90%;
       box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-close-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+      line-height: 1;
+      z-index: 100000;
+    }
+
+    .popup-close-btn:hover {
+      color: #e74c3c;
+      /* Red on hover */
     }
 
     .popup-buttons {
       display: flex;
+      flex: 1;
       justify-content: center;
       gap: 15px;
       margin-top: 20px;
+    }
+
+    #stay-here-btn:hover {
+      background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%) !important;
     }
 
     @keyframes confetti-fall {
@@ -636,7 +676,11 @@
 
     <div class="completed-popup" id="completed-popup" style="display: none">
       <div class="popup-content">
+        <button class="popup-close-btn" aria-label="Close popup">&times;</button>
         <h3>Unit Completed!</h3>
+        <div style="font-size: 6rem; color: gold; margin: 1rem 0; text-align: center; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
         <div class="popup-buttons">
           <button id="next-chapter-btn" class="btn">Next Chapter</button>
           <button id="stay-here-btn" class="btn" style="background: linear-gradient(90deg, #e74c3c, #c0392b)">
@@ -665,11 +709,9 @@
 
         <div class="description" id="term-description"></div>
         <div class="letter-boxes-container" id="letter-boxes-container"></div>
-        <div class="input-group">
+        <div class="button-container">
           <button class="btn" id="submit-btn">Submit Answer</button>
-          <button class="btn" id="clear-btn" style="background: linear-gradient(90deg, #e74c3c, #c0392b)">
-            Clear
-          </button>
+          <button class="btn" id="clear-btn" style="background: linear-gradient(90deg, #e74c3c, #c0392b)">Clear</button>
         </div>
 
         <div class="message" id="message"></div>
@@ -1470,6 +1512,13 @@
       }
     });
     // Other event listeners
+    // Close popup when clicking the close button
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('popup-close-btn')) {
+        const popup = document.querySelector('.completed-popup');
+        if (popup) popup.style.display = 'none';
+      }
+    });
     submitBtn.addEventListener('click', checkAnswer);
     clearBtn.addEventListener('click', clearAllBlanks);
   </script>
