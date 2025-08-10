@@ -1286,6 +1286,10 @@
       if (!box) return;
       // Always replace the content
       box.textContent = char;
+      // Force repaint to fix Android rendering issues
+      box.style.display = 'none';
+      box.offsetHeight; // Trigger reflow
+      box.style.display = '';
       box.classList.remove('blank');
       box.classList.add('user-input');
       userInput[currentBlankIndex] = char;
