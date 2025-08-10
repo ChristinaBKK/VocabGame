@@ -9,6 +9,7 @@
 <body>
   <audio id="correct-sound" src="https://christinabkk.github.io/VocabGame/correct-156911.mp3" preload="auto"></audio>
   <audio id="wrong-sound" src="https://christinabkk.github.io/VocabGame/wrong-47985.mp3" preload="auto"></audio>
+  <audio id="celebration-audio" src="https://christinabkk.github.io/VocabGame/Next.mp3" preload="auto"></audio>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://christinabkk.github.io/VocabGame/confetti.css" />
   <script src="https://christinabkk.github.io/VocabGame/confetti.js"></script>
@@ -744,21 +745,19 @@
     function getSafeUnits(vocabularyData) {
       return [...new Set(
         vocabularyData
-        .map(term => term.unit) // Extract all units
-        .filter(unit => unit != null) // Remove null/undefined
-        .map(unit => String(unit)) // Convert to strings
+        .map(term => term.unit)
+        .filter(unit => unit != null)
+        .map(unit => String(unit))
       )];
     }
 
     function sortUnits(units) {
       return units.sort((a, b) => {
-        // Handle numeric units (1, 1.2, 2.3.1, etc.)
         const numA = parseFloat(a);
         const numB = parseFloat(b);
         if (!isNaN(numA) && !isNaN(numB)) {
           return numA - numB || a.localeCompare(b);
         }
-        // Fallback to string comparison
         return a.localeCompare(b);
       });
     }
@@ -873,19 +872,14 @@
         return;
       }
       // Get selected units
-      const selectedUnits = Array.from(
-          document.querySelectorAll('.unit-option:checked')
-        )
+      const selectedUnits = Array.from(document.querySelectorAll('.unit-option:checked'))
         .map(checkbox => checkbox.value)
         .filter(value => value !== 'all');
-      // Filter terms based on selection
-      currentTerms = [];
-      if (selectedUnits.length === 0 ||
-        document.querySelector('.unit-option[value="all"]').checked) {
+      if (selectedUnits.length === 0 || document.querySelector('.unit-option[value="all"]').checked) {
         currentTerms = [...vocabularyData];
       } else {
         currentTerms = vocabularyData.filter(term =>
-          selectedUnits.some(unit => Number(unit) === term.unit)
+          selectedUnits.some(unit => String(term.unit) === unit)
         );
       }
       // Validate we have terms
@@ -1247,16 +1241,13 @@
 
     function loadChapter(chapterNumber) {
       currentChapter = chapterNumber;
-      console.log(`Loading chapter ${currentChapter}`);
-      // Get units for this chapter
       const chapterUnits = [
         ...new Set(
           vocabularyData
-          .filter((term) => term.chapter === currentChapter)
-          .map((term) => term.unit),
-        ),
+          .filter(term => term.chapter === currentChapter)
+          .map(term => String(term.unit))
+        )
       ];
-      // Update checkboxes
       const unitOptions = document.querySelectorAll('.unit-option');
       unitOptions.forEach((opt) => {
         if (opt.value === 'all') {
@@ -1315,6 +1306,9 @@
     function showCelebration() {
       if (typeof startConfetti === 'function') {
         startConfetti();
+        const audioEl = document.getElementById('celebration-audio');
+        audioEl.currentTime = 0; // restart from beginning
+        audioEl.play().catch(err => console.error('Audio play error:', err));
       } else {
         console.warn('Confetti function not loaded yet!');
       }
@@ -1333,7 +1327,7 @@
         nextChapterBtn.onclick = restartEntireCourse;
         showCelebration();
       } else {
-        popupMessage.textContent = `This Unit Completed!`;
+        popupMessage.textContent = `Unit Completed!`;
         nextChapterBtn.textContent = `Continue to the Next Unit`;
         showCelebration();
         nextChapterBtn.onclick = function() {
