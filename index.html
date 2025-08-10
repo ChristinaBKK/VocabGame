@@ -7,8 +7,7 @@
 </head>
 
 <body>
-  <input type="text" id="hidden-input" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" style="position:absolute; opacity:0; width:1px; height:1px; border:none; padding:0; margin:0; z-index:1000;" />
-
+  <input type="text" id="hidden-input" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" />
   <audio id="correct-sound" src="https://christinabkk.github.io/VocabGame/correct-156911.mp3" preload="auto"></audio>
   <audio id="wrong-sound" src="https://christinabkk.github.io/VocabGame/wrong-47985.mp3" preload="auto"></audio>
   <audio id="celebration-audio" src="https://christinabkk.github.io/VocabGame/Next.mp3" preload="auto"></audio>
@@ -19,8 +18,10 @@
 
   <style>
     :root {
-  --vh: 100%; /* fallback */
-}
+      --vh: 100%;
+      /* fallback */
+    }
+
     .confetti-container {
       position: fixed;
       /* cover entire viewport */
@@ -387,17 +388,24 @@
 
     /* Hidden input should be fully transparent but still focusable */
     #hidden-input {
+      position: absolute;
       background: transparent;
+      top: 50%;
+      /* keep it inside viewport so Android focuses it */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.01;
+      /* fully invisible */
+      pointer-events: auto;
+      /* don't let clicks land here */
+      caret-color: transparent;
+      width: 1px;
+      height: 1px;
       border: none;
       outline: none;
-      opacity: 0;
-      /* fully transparent */
-      caret-color: transparent;
-      /* hide caret, or style it if you want */
-      position: absolute;
-      /* positioned dynamically */
+      padding: 0;
+      margin: 0;
       z-index: 1000;
-      /* above letter boxes */
     }
 
     .button-container {
@@ -864,45 +872,50 @@
   </div>
 
   <script>
-    //  Fix viewport height (Android/iOS safe)
-function fixViewportHeight() {
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-window.addEventListener('resize', fixViewportHeight);
-fixViewportHeight();
-
-// Ensure input is visible when typing
-const popup = document.getElementById('completed-popup');
-document.querySelectorAll('#completed-popup input, #completed-popup textarea').forEach(input => {
-  input.addEventListener('focus', () => {
-    // Prevent Android position:fixed bug
-    popup.style.position = 'absolute';
-    setTimeout(() => {
-      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 300);
-  });
-
-  input.addEventListener('blur', () => {
-    popup.style.position = 'fixed';
-  });
-});
-
     const hiddenInput = document.getElementById('hidden-input');
+
+    function isAndroid() {
+      return /Android/i.test(navigator.userAgent);
+    }
+    // Focus hidden input on letter box click, with optional delay for Android
+    function focusHiddenInput() {
+      if (isAndroid()) {
+        setTimeout(() => {
+          hiddenInput.focus();
+        }, 50);
+      } else {
+        hiddenInput.focus();
+      }
+    }
+    // Attach click listeners to letter boxes
+    document.querySelectorAll('.letter-box').forEach(box => {
+      box.addEventListener('click', focusHiddenInput);
+    });
 
     function updateHiddenInputPosition() {
       const activeBox = letterBoxesContainer.querySelector(`.letter-box[data-index="${currentBlankIndex}"]`);
       if (activeBox) {
         const rect = activeBox.getBoundingClientRect();
-        hiddenInput.style.position = 'absolute'; // make sure this is set in CSS or here
+        hiddenInput.style.position = 'absolute';
         hiddenInput.style.top = `${rect.top + window.scrollY}px`;
         hiddenInput.style.left = `${rect.left + window.scrollX}px`;
-        hiddenInput.style.width = `${rect.width}px`;
-        hiddenInput.style.height = `${rect.height}px`;
-        hiddenInput.style.opacity = '1'; // show hidden input but keep it visually transparent via CSS
+        // On Android, ensure minimum size and slight opacity
+        if (isAndroid()) {
+          hiddenInput.style.width = `${Math.max(rect.width, 20)}px`;
+          hiddenInput.style.height = `${Math.max(rect.height, 30)}px`;
+          hiddenInput.style.opacity = '0.01';
+          hiddenInput.style.pointerEvents = 'auto';
+        } else {
+          // For iOS and desktop keep your normal sizing and full opacity if you want
+          hiddenInput.style.width = `${rect.width}px`;
+          hiddenInput.style.height = `${rect.height}px`;
+          hiddenInput.style.opacity = '1';
+          hiddenInput.style.pointerEvents = 'none';
+        }
         hiddenInput.focus();
       } else {
         hiddenInput.style.opacity = '0';
+        hiddenInput.style.pointerEvents = 'none';
       }
     }
     // When moving cursor:
