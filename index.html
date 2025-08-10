@@ -944,7 +944,7 @@
       const val = e.target.value.toUpperCase();
       if (/^[A-Z]$/.test(val)) {
         userInput[currentBlankIndex] = val;
-        updateLetterBox(currentBlankIndex, val);
+        fillBlank(val);
         moveToNextBlank();
       }
       e.target.value = ''; // Clear input to accept next letter
