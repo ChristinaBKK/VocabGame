@@ -7,6 +7,8 @@
 </head>
 
 <body>
+  <input type="text" id="hidden-input" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" style="position:absolute; opacity:0; width:1px; height:1px; border:none; padding:0; margin:0; z-index:1000;" />
+
   <audio id="correct-sound" src="https://christinabkk.github.io/VocabGame/correct-156911.mp3" preload="auto"></audio>
   <audio id="wrong-sound" src="https://christinabkk.github.io/VocabGame/wrong-47985.mp3" preload="auto"></audio>
   <audio id="celebration-audio" src="https://christinabkk.github.io/VocabGame/Next.mp3" preload="auto"></audio>
@@ -380,6 +382,21 @@
       justify-content: center;
     }
 
+    /* Hidden input should be fully transparent but still focusable */
+    #hidden-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      opacity: 0;
+      /* fully transparent */
+      caret-color: transparent;
+      /* hide caret, or style it if you want */
+      position: absolute;
+      /* positioned dynamically */
+      z-index: 1000;
+      /* above letter boxes */
+    }
+
     .btn {
       padding: 14px 28px;
       background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
@@ -681,6 +698,53 @@
   </div>
 
   <script>
+    const hiddenInput = document.getElementById('hidden-input');
+
+    function updateHiddenInputPosition() {
+      const activeBox = letterBoxesContainer.querySelector(`.letter-box[data-index="${currentBlankIndex}"]`);
+      if (activeBox) {
+        const rect = activeBox.getBoundingClientRect();
+        hiddenInput.style.position = 'absolute'; // make sure this is set in CSS or here
+        hiddenInput.style.top = `${rect.top + window.scrollY}px`;
+        hiddenInput.style.left = `${rect.left + window.scrollX}px`;
+        hiddenInput.style.width = `${rect.width}px`;
+        hiddenInput.style.height = `${rect.height}px`;
+        hiddenInput.style.opacity = '1'; // show hidden input but keep it visually transparent via CSS
+        hiddenInput.focus();
+      } else {
+        hiddenInput.style.opacity = '0';
+      }
+    }
+    // When moving cursor:
+    function moveToNextBlank() {
+      const currentIdx = editableIndices.indexOf(currentBlankIndex);
+      if (currentIdx < editableIndices.length - 1) {
+        currentBlankIndex = editableIndices[currentIdx + 1];
+        updateActiveBlank(); // update visible cursor styling
+        updateHiddenInputPosition(); // position hidden input for mobile input
+      }
+    }
+
+    function moveToPreviousBlank() {
+      const currentIdx = editableIndices.indexOf(currentBlankIndex);
+      if (currentIdx > 0) {
+        currentBlankIndex = editableIndices[currentIdx - 1];
+        updateActiveBlank();
+        updateHiddenInputPosition();
+      }
+    }
+
+    function handleHiddenInput(e) {
+      const val = e.target.value.toUpperCase();
+      if (/^[A-Z]$/.test(val)) {
+        userInput[currentBlankIndex] = val;
+        updateLetterBox(currentBlankIndex, val);
+        moveToNextBlank();
+      }
+      e.target.value = ''; // Clear input to accept next letter
+      updateHiddenInputPosition();
+    }
+    hiddenInput.addEventListener('input', handleHiddenInput);
     let vocabularyData = []; // Global variable
     let gameInitialized = false; // Track if data is loaded
     // Load data first, THEN initialize game
@@ -1024,6 +1088,8 @@
       if (currentIdx < editableIndices.length - 1) {
         currentBlankIndex = editableIndices[currentIdx + 1];
         updateActiveBlank();
+      } else {
+        updateHiddenInputPosition();
       }
     }
 
@@ -1035,11 +1101,21 @@
         return;
       }
       if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
-        e.preventDefault(); // Prevent default to avoid double input
+        e.preventDefault(); // prevent double input
         fillBlank(e.key);
+        updateHiddenInputPosition();
       } else if (e.key === 'Backspace') {
         e.preventDefault();
         handleBackspace();
+        updateHiddenInputPosition();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        moveToPreviousBlank();
+        updateHiddenInputPosition();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        moveToNextBlank();
+        updateHiddenInputPosition();
       } else if (e.key === 'Enter') {
         e.preventDefault();
         checkAnswer();
@@ -1090,11 +1166,13 @@
       // If there's a letter in current box, delete it
       if (currentValue !== '') {
         clearBlank();
+        updateHiddenInputPosition();
       } else if (currentIdx > 0) {
         // Move to previous and clear that
         currentBlankIndex = editableIndices[currentIdx - 1];
         clearBlank();
         updateActiveBlank();
+        updateHiddenInputPosition();
       }
     }
 
@@ -1116,6 +1194,7 @@
         currentBlank.style.border = '2px solid #3498db';
         currentBlank.style.transform = 'scale(1.05)';
       }
+      updateHiddenInputPosition();
     }
 
     function checkAnswer() {
