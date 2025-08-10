@@ -1,4 +1,4 @@
-<html lang="en">
+\<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -12,7 +12,37 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://christinabkk.github.io/VocabGame/confetti.css" />
   <script src="https://christinabkk.github.io/VocabGame/confetti.js"></script>
+  <script src="https://christinabkk.github.io/VocabGame/loadWords.js"></script>
+
   <style>
+    .confetti-container {
+      position: fixed;
+      /* cover entire viewport */
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      /* so clicks pass through */
+      z-index: 9998;
+      /* Fix for scroll on mobile & desktop */
+      -webkit-overflow-scrolling: touch;
+      overflow: visible !important;
+    }
+
+    .completed-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -557,21 +587,6 @@
       font-size: 1.3rem;
       margin-bottom: 2rem;
     }
-
-    .confetti-container {
-      position: fixed;
-      /* cover entire viewport */
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      /* so clicks pass through */
-      z-index: 9998;
-      /* Fix for scroll on mobile & desktop */
-      -webkit-overflow-scrolling: touch;
-      overflow: visible !important;
-    }
   </style>
 
   <div class="confetti-container" id="confetti-container"></div>
@@ -585,23 +600,17 @@
       <div class="selector-container">
         <label><i class="fas fa-book-open"></i> Select Unit(s):</label>
         <div class="custom-dropdown">
-          <button class="dropdown-toggle" id="dropdown-toggle">
-            <span id="dropdown-text">All Units</span>
+          <button class="dropdown-toggle" id="dropdown-toggle" disabled>
+            <span id="dropdown-text">Loading units...</span>
             <i class="fas fa-caret-down"></i>
           </button>
           <div class="dropdown-menu" id="dropdown-menu">
-            <label class="dropdown-item">
+            <!-- Only keep the "All Units" container -->
+            <label class="dropdown-item all-units-item">
               <input type="checkbox" class="unit-option" value="all" checked />
               <span>All Units</span>
             </label>
-            <label class="dropdown-item">
-              <input type="checkbox" class="unit-option" value="1.2" />
-              <span>Unit 1.2</span>
-            </label>
-            <label class="dropdown-item">
-              <input type="checkbox" class="unit-option" value="1.3" />
-              <span>Unit 1.3</span>
-            </label>
+            <!-- Dynamic units will be inserted here by JavaScript -->
           </div>
         </div>
       </div>
@@ -671,57 +680,36 @@
   </div>
 
   <script>
-    // Vocabulary data
-    const vocabularyData = [{
-        chapter: 1,
-        unit: '1.2',
-        date: '~10,000 ya',
-        term: 'Bering Strait Land Bridge',
-        description: 'Settlement of the Americas likely began as humans crossed from Asia into North America during the last ice age when sea levels were lower exposed a land bridge between the two continents.',
-      },
-      {
-        chapter: 1,
-        unit: '1.2',
-        date: '~9000 ya',
-        term: 'Maize',
-        description: 'Corn, a new-world crop first domesticated in modern day Mexico which played an important role in Mayan, Aztec, and many North American indigenous societies.',
-      },
-      {
-        chapter: 1,
-        unit: '1.2',
-        date: '~1660-1830s CE',
-        term: 'Iroquois Confederation',
-        description: 'A political union between various Native American peoples of the northeastern United States also known as Haudenosauanee. Members included Seneca, Cayuga, Mohawk, Onondaga, Oneida, and later the Tuscaroras.',
-      },
-      {
-        chapter: 2,
-        unit: '1.3',
-        date: '1492 CE',
-        term: 'Christopher Columbus',
-        description: 'Genoese sponsored by Spain in 1492, aimed to find a westward route to Asia but inadvertently discovered the Americas. His voyages marked the beginning of sustained European contact with the New World, impacting both regions significantly.',
-      },
-      {
-        chapter: 2,
-        unit: '1.3',
-        date: '1517-today',
-        term: 'Protestant Reformation',
-        description: 'Beginning in the early 16th century, this movement aimed to reform the Catholic Church and led to the emergence of various denominations. This movement affected religious beliefs, political power, and migration patterns.',
-      },
-      {
-        chapter: 2,
-        unit: '1.3',
-        date: '1648 CE',
-        term: 'Nation-States',
-        description: 'By the Early Modern period, a new concept of statehood emerged in Europe, marked by centralized governments and defined territories beginning with the Treaty of Westphalia. This drove the Age of Exploration as European powers sought new resources and territories.',
-      },
-      {
-        chapter: 2,
-        unit: '1.3',
-        date: '1494 CE',
-        term: 'Treaty of Tordesillas',
-        description: 'This treaty divided newly discovered lands between Spain and Portugal along a meridian called the line of demarcation. The two empires worked with the Catholic Church. This agreement aimed to resolve territorial disputes and significantly influenced colonization patterns in the New World.',
-      },
-    ];
+    let vocabularyData = []; // Global variable
+    let gameInitialized = false; // Track if data is loaded
+    // Load data first, THEN initialize game
+    async function initializeApp() {
+      try {
+        // Show loading state
+        const dropdownToggle = document.getElementById('dropdown-toggle');
+        dropdownToggle.disabled = true;
+        dropdownToggle.querySelector('#dropdown-text').textContent = 'Loading units...';
+        // Load data
+        await VocabularyLoader.fetchVocabulary('https://christinabkk.github.io/VocabGame/words.json');
+        vocabularyData = VocabularyLoader.getVocabulary();
+        // Validate data structure
+        if (!Array.isArray(vocabularyData)) {
+          throw new Error('Invalid vocabulary data format');
+        }
+        // Debug: Log first few terms to verify structure
+        console.log('Sample terms:', vocabularyData.slice(0, 3));
+        // Setup UI
+        setupDropdown();
+        initGame();
+      } catch (error) {
+        console.error('Initialization failed:', error);
+        document.getElementById('dropdown-text').textContent = 'Load failed - Retry';
+        document.getElementById('dropdown-toggle').disabled = false;
+        document.getElementById('dropdown-toggle').onclick = initializeApp;
+      }
+    }
+    // Call this instead of initGame() on startup
+    initializeApp();
     // Game state variables
     let currentTerms = [];
     let currentTermIndex = 0;
@@ -752,6 +740,28 @@
     const totalTerms = document.getElementById('total-terms');
     const correctSound = document.getElementById('correct-sound');
     const wrongSound = document.getElementById('wrong-sound');
+
+    function getSafeUnits(vocabularyData) {
+      return [...new Set(
+        vocabularyData
+        .map(term => term.unit) // Extract all units
+        .filter(unit => unit != null) // Remove null/undefined
+        .map(unit => String(unit)) // Convert to strings
+      )];
+    }
+
+    function sortUnits(units) {
+      return units.sort((a, b) => {
+        // Handle numeric units (1, 1.2, 2.3.1, etc.)
+        const numA = parseFloat(a);
+        const numB = parseFloat(b);
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return numA - numB || a.localeCompare(b);
+        }
+        // Fallback to string comparison
+        return a.localeCompare(b);
+      });
+    }
     // GLOBAL function so any part of the code can call it
     function updateDropdownText() {
       const selected = Array.from(document.querySelectorAll('.unit-option:checked'))
@@ -768,69 +778,133 @@
       }
     }
     // Dropdown functionality
+    // Global variable to track loaded units
+    let availableUnits = [];
+
     function setupDropdown() {
+      const dropdownMenu = document.getElementById('dropdown-menu');
+      const allUnitsItem = dropdownMenu.querySelector('.all-units-item');
+      // Clear previous units
+      dropdownMenu.querySelectorAll('.dropdown-item:not(.all-units-item)').forEach(el => el.remove());
+      // Get and sort units safely
+      availableUnits = sortUnits(getSafeUnits(vocabularyData));
+      // Add unit options
+      availableUnits.forEach(unit => {
+        const unitItem = document.createElement('label');
+        unitItem.className = 'dropdown-item';
+        unitItem.innerHTML = `
+      <input type="checkbox" class="unit-option" value="${unit}" />
+      <span>Unit ${unit}</span>
+    `;
+        dropdownMenu.appendChild(unitItem);
+      });
+      // Initialize dropdown behavior
+      initDropdownBehavior();
+      updateDropdownText();
+      // Enable dropdown
+      const dropdownToggle = document.getElementById('dropdown-toggle');
+      dropdownToggle.disabled = false;
+      dropdownToggle.querySelector('#dropdown-text').textContent = 'All Units';
+    }
+
+    function initDropdownBehavior() {
       const dropdownToggle = document.getElementById('dropdown-toggle');
       const dropdownMenu = document.getElementById('dropdown-menu');
-      const unitOptions = document.querySelectorAll('.unit-option');
+      // Remove any existing listeners to prevent duplicates
+      dropdownToggle.replaceWith(dropdownToggle.cloneNode(true));
+      dropdownMenu.replaceWith(dropdownMenu.cloneNode(true));
+      // Get fresh references after clone
+      const freshToggle = document.getElementById('dropdown-toggle');
+      const freshMenu = document.getElementById('dropdown-menu');
+      // Toggle dropdown visibility
+      freshToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        freshMenu.classList.toggle('show');
+      });
+      // Close when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!freshMenu.contains(e.target) && e.target !== freshToggle) {
+          freshMenu.classList.remove('show');
+        }
+      });
+      // Handle checkbox changes using event delegation
+      freshMenu.addEventListener('change', function(e) {
+        if (!e.target.classList.contains('unit-option')) return;
+        const changedOption = e.target;
+        const allUnitsOption = document.querySelector('.unit-option[value="all"]');
+        if (changedOption.value === 'all' && changedOption.checked) {
+          // Uncheck all other options when "All" is selected
+          document.querySelectorAll('.unit-option:not([value="all"])').forEach(opt => {
+            opt.checked = false;
+          });
+        } else if (changedOption.checked) {
+          // Uncheck "All" when specific units are selected
+          allUnitsOption.checked = false;
+        }
+        updateDropdownText();
+        initGame();
+      });
+    }
+
+    function updateDropdownText() {
+      const selectedOptions = Array.from(document.querySelectorAll('.unit-option:checked'))
+        .filter(opt => opt.value !== 'all')
+        .map(opt => opt.value);
       const dropdownText = document.getElementById('dropdown-text');
-      if (!dropdownToggle || !dropdownMenu) return;
-      // Toggle dropdown menu
-      dropdownToggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        dropdownMenu.classList.toggle('show');
-      });
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function() {
-        dropdownMenu.classList.remove('show');
-      });
-      // Prevent dropdown from closing when clicking inside
-      dropdownMenu.addEventListener('click', function(e) {
-        e.stopPropagation();
-      });
-      // Handle checkbox changes
-      unitOptions.forEach((option) => {
-        option.addEventListener('change', function() {
-          if (this.value === 'all' && this.checked) {
-            // Uncheck other options when "All" is selected
-            unitOptions.forEach((opt) => {
-              if (opt.value !== 'all') opt.checked = false;
-            });
-          } else if (this.value !== 'all' && this.checked) {
-            // Uncheck "All" when specific units are selected
-            document.querySelector('.unit-option[value="all"]').checked = false;
-          }
-          updateDropdownText();
-          initGame();
+      if (selectedOptions.length === 0 || document.querySelector('.unit-option[value="all"]').checked) {
+        dropdownText.textContent = 'All Units';
+      } else if (selectedOptions.length === 1) {
+        dropdownText.textContent = `Unit ${selectedOptions[0]}`;
+      } else if (selectedOptions.length === availableUnits.length) {
+        dropdownText.textContent = 'All Units';
+        document.querySelector('.unit-option[value="all"]').checked = true;
+        document.querySelectorAll('.unit-option:not([value="all"])').forEach(opt => {
+          opt.checked = false;
         });
-      });
-      // Initialize dropdown text
-      updateDropdownText();
+      } else {
+        dropdownText.textContent = `${selectedOptions.length} Units Selected`;
+      }
     }
     // Initialize the game
     function initGame() {
-      // Get selected units from checkboxes
+      // Guard clause for empty vocabulary data
+      if (vocabularyData.length === 0) {
+        console.warn("Vocabulary data not loaded yet!");
+        return;
+      }
+      // Get selected units
       const selectedUnits = Array.from(
-          document.querySelectorAll('.unit-option:checked'),
+          document.querySelectorAll('.unit-option:checked')
         )
-        .map((checkbox) => checkbox.value)
-        .filter((value) => value !== 'all'); // Exclude 'all' from the actual selection
-      // Filter terms based on selected units
+        .map(checkbox => checkbox.value)
+        .filter(value => value !== 'all');
+      // Filter terms based on selection
       currentTerms = [];
-      if (
-        selectedUnits.length === 0 ||
-        document.querySelector('.unit-option[value="all"]').checked
-      ) {
-        // If "All Units" is checked or nothing selected, use all terms
+      if (selectedUnits.length === 0 ||
+        document.querySelector('.unit-option[value="all"]').checked) {
         currentTerms = [...vocabularyData];
       } else {
-        // Otherwise use only selected units
-        selectedUnits.forEach((unit) => {
-          const unitTerms = vocabularyData.filter((term) => term.unit === unit);
-          currentTerms.push(...unitTerms);
-        });
+        currentTerms = vocabularyData.filter(term =>
+          selectedUnits.some(unit => Number(unit) === term.unit)
+        );
       }
-      // Rest of your initGame code...
+      // Validate we have terms
+      if (currentTerms.length === 0) {
+        messageEl.textContent = 'No terms found for selected unit(s)';
+        messageEl.className = 'message error';
+        // Reset game state but don't proceed further
+        resetGameState();
+        return;
+      }
+      // Reset game state
+      resetGameState();
+      // Initialize with filtered terms
       currentTerms.sort(() => Math.random() - 0.5);
+      currentTermIndex = 0; // Make sure we start at the first term
+      showTerm(currentTermIndex);
+    }
+
+    function resetGameState() {
       currentTermIndex = 0;
       correctAnswers = 0;
       totalAttempts = 0;
@@ -839,8 +913,6 @@
       editableIndices = [];
       animationContainer.innerHTML = '';
       updateScore();
-      showTerm(currentTermIndex);
-      messageEl.className = 'message';
       document.addEventListener('keydown', handleKeyDown);
     }
     // Create letter boxes for the current term
@@ -1147,31 +1219,30 @@
     }
 
     function showTerm(index) {
-      if (index >= currentTerms.length) {
-        console.log('showTerm: index out of range, ending game');
+      // Boundary check - should only end game if we're past the last term
+      if (index >= currentTerms.length || currentTerms.length === 0) {
         endGame();
         return;
       }
       const term = currentTerms[index];
-      dateHint.textContent = `Date: ${term.date}`;
+      // Update UI elements
+      dateHint.textContent = term.date ? `Date: ${term.date}` : '';
       termDescription.textContent = term.description;
       createLetterBoxes(term.term);
+      // Update progress indicators
+      updateProgressDisplay(index);
+      messageEl.className = 'message';
+      messageEl.textContent = '';
+    }
+
+    function updateProgressDisplay(currentIndex) {
       const progressFill = document.querySelector('.progress-fill');
       const progressText = document.getElementById('progress-text');
-      console.log(
-        `showTerm: Showing term index ${index} of ${currentTerms.length}`,
-      );
-      console.log('Progress bar element:', progressFill);
-      console.log('Progress text element:', progressText);
       if (progressFill && progressText) {
-        const progressPercent = (index / currentTerms.length) * 100;
-        console.log(`Setting progress bar width to: ${progressPercent}%`);
+        const progressPercent = ((currentIndex) / currentTerms.length) * 100;
         progressFill.style.width = `${progressPercent}%`;
-        progressText.textContent = `${index + 1} / ${currentTerms.length} terms`;
-      } else {
-        console.warn('Progress bar or text element not found!');
+        progressText.textContent = `${currentIndex + 1}/${currentTerms.length}`;
       }
-      messageEl.className = 'message';
     }
 
     function loadChapter(chapterNumber) {
@@ -1300,62 +1371,12 @@
     }
     // Event Listeners
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize dropdown functionality
-      const dropdownToggle = document.getElementById('dropdown-toggle');
-      const dropdownMenu = document.getElementById('dropdown-menu');
-      const unitOptions = document.querySelectorAll('.unit-option');
-      const dropdownText = document.getElementById('dropdown-text');
-      const selectAll = document.querySelector('.unit-option[value="all"]');
-      // Verify elements exist
-      if (!dropdownToggle || !dropdownMenu || !selectAll || !dropdownText) {
-        console.error('Required dropdown elements not found');
-        return;
-      }
-      // Toggle dropdown menu
-      dropdownToggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        dropdownMenu.classList.toggle('show');
-      });
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function() {
-        dropdownMenu.classList.remove('show');
-      });
-      // Prevent dropdown from closing when clicking inside
-      dropdownMenu.addEventListener('click', function(e) {
-        e.stopPropagation();
-      });
-      // Handle checkbox changes
-      unitOptions.forEach((option) => {
-        option.addEventListener('change', function() {
-          if (this.value === 'all') {
-            // When "All Units" is changed, update all other checkboxes
-            const isChecked = this.checked;
-            unitOptions.forEach((opt) => {
-              if (opt.value !== 'all') {
-                opt.checked = isChecked;
-              }
-            });
-          } else {
-            // When any other checkbox is changed
-            selectAll.checked = false;
-            // Check if all units are now selected
-            const allChecked = Array.from(unitOptions)
-              .filter((opt) => opt.value !== 'all')
-              .every((opt) => opt.checked);
-            if (allChecked) {
-              selectAll.checked = true;
-            }
-          }
-          updateDropdownText();
-          initGame();
-        });
-      });
-      // Initialize game and dropdown text
-      updateDropdownText();
-      initGame();
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      // Disable confetti if it's active
+      // Initialize the app - this will handle everything
+      initializeApp();
+      // Other global event listeners (not related to dropdown)
+      submitBtn.addEventListener('click', checkAnswer);
+      clearBtn.addEventListener('click', clearAllBlanks);
+      // Confetti cleanup
       if (window.confetti) {
         window.confetti.reset();
       }
