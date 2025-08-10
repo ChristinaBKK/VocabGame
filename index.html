@@ -752,12 +752,27 @@
     }
 
     function sortUnits(units) {
-      return units.sort((a, b) => {
-        const numA = parseFloat(a);
-        const numB = parseFloat(b);
-        if (!isNaN(numA) && !isNaN(numB)) {
-          return numA - numB || a.localeCompare(b);
+      // Map each unit to the lowest chapter number it appears in
+      const unitChapterMap = {};
+      units.forEach(unit => {
+        const chaptersForUnit = vocabularyData
+          .filter(term => String(term.unit) === unit && term.chapter !== undefined)
+          .map(term => term.chapter);
+        if (chaptersForUnit.length > 0) {
+          unitChapterMap[unit] = Math.min(...chaptersForUnit);
         }
+      });
+      return units.sort((a, b) => {
+        const chapterA = unitChapterMap[a];
+        const chapterB = unitChapterMap[b];
+        if (chapterA !== undefined && chapterB !== undefined) {
+          if (chapterA !== chapterB) {
+            return chapterA - chapterB;
+          }
+          return a.localeCompare(b);
+        }
+        if (chapterA !== undefined) return -1;
+        if (chapterB !== undefined) return 1;
         return a.localeCompare(b);
       });
     }
