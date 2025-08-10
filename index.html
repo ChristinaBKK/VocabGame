@@ -945,7 +945,6 @@
       if (/^[A-Z]$/.test(val)) {
         userInput[currentBlankIndex] = val;
         fillBlank(val);
-        moveToNextBlank();
       }
       e.target.value = ''; // Clear input to accept next letter
       updateHiddenInputPosition();
