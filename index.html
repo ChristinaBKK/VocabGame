@@ -941,7 +941,7 @@
     }
 
     function handleHiddenInput(e) {
-      const val = e.target.value.toUpperCase();
+      const val = e.target.value;
       if (/^[A-Z]$/.test(val)) {
         userInput[currentBlankIndex] = val;
         fillBlank(val);
