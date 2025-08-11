@@ -1149,6 +1149,65 @@
         dropdownText.textContent = `${selectedOptions.length} Units Selected`;
       }
     }
+    
+    function hideDropdown() {
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+  if (dropdownMenu && dropdownMenu.classList.contains('show')) {
+    dropdownMenu.classList.remove('show');
+  }
+}
+    
+    // Hide dropdown when user clicks a letter box
+document.querySelectorAll('.letter-box').forEach(box => {
+  box.addEventListener('click', () => {
+    hideDropdown();
+    // existing code to focus input or other stuff can go here
+  });
+});
+
+// Hide dropdown on input in hidden input (mobile)
+if (hiddenInput) {
+  hiddenInput.addEventListener('input', () => {
+    hideDropdown();
+  });
+}
+
+// Hide dropdown on typing anywhere on PC visible inputs
+document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+  input.addEventListener('input', () => {
+    hideDropdown();
+  });
+});
+
+// Also, if you want to catch keyboard typing anywhere on PC, use keydown on document:
+document.addEventListener('keydown', (e) => {
+  // Optionally, add conditions to ignore if dropdown not open or on some inputs
+  hideDropdown();
+});
+
+// Hide dropdown when user submits or clears input
+// Example: Assuming you have submit and clear buttons like these:
+if (submitBtn) {
+  submitBtn.addEventListener('click', () => {
+    hideDropdown();
+    // your existing submit logic here
+  });
+}
+
+if (clearBtn) {
+  clearBtn.addEventListener('click', () => {
+    hideDropdown();
+    // your existing clear logic here
+  });
+}
+
+// Optional: Hide dropdown if clicking outside the dropdown area
+document.addEventListener('click', (e) => {
+  const dropdown = document.querySelector('.custom-dropdown');
+  if (dropdown && !dropdown.contains(e.target)) {
+    hideDropdown();
+  }
+});
     // Initialize the game
     function initGame() {
       // Guard clause for empty vocabulary data
